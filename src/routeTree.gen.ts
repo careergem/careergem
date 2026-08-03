@@ -16,6 +16,7 @@ import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as AssessmentIdRouteImport } from './routes/assessment.$id'
 import { Route as AssessmentNewRouteImport } from './routes/assessment.new'
 
@@ -54,6 +55,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AssessmentIdRoute = AssessmentIdRouteImport.update({
   id: '/assessment/$id',
   path: '/assessment/$id',
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof OnboardingRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/settings': typeof SettingsRoute
   '/assessment/$id': typeof AssessmentIdRoute
   '/assessment/new': typeof AssessmentNewRoute
 }
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/onboarding': typeof OnboardingRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/settings': typeof SettingsRoute
   '/assessment/$id': typeof AssessmentIdRoute
   '/assessment/new': typeof AssessmentNewRoute
 }
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/onboarding': typeof OnboardingRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/settings': typeof SettingsRoute
   '/assessment/$id': typeof AssessmentIdRoute
   '/assessment/new': typeof AssessmentNewRoute
 }
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/pricing'
     | '/privacy'
+    | '/settings'
     | '/assessment/$id'
     | '/assessment/new'
   fileRoutesByTo: FileRoutesByTo
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/pricing'
     | '/privacy'
+    | '/settings'
     | '/assessment/$id'
     | '/assessment/new'
   id:
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/pricing'
     | '/privacy'
+    | '/settings'
     | '/assessment/$id'
     | '/assessment/new'
   fileRoutesById: FileRoutesById
@@ -143,6 +155,7 @@ export interface RootRouteChildren {
   OnboardingRoute: typeof OnboardingRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
+  SettingsRoute: typeof SettingsRoute
   AssessmentIdRoute: typeof AssessmentIdRoute
   AssessmentNewRoute: typeof AssessmentNewRoute
 }
@@ -198,6 +211,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/assessment/$id': {
       id: '/assessment/$id'
       path: '/assessment/$id'
@@ -223,6 +243,7 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingRoute: OnboardingRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
+  SettingsRoute: SettingsRoute,
   AssessmentIdRoute: AssessmentIdRoute,
   AssessmentNewRoute: AssessmentNewRoute,
 }
