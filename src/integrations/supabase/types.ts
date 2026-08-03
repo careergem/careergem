@@ -14,7 +14,119 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      assessments: {
+        Row: {
+          ciphertext: string
+          created_at: string
+          id: string
+          iv: string
+          score: number | null
+          user_id: string
+        }
+        Insert: {
+          ciphertext: string
+          created_at?: string
+          id?: string
+          iv: string
+          score?: number | null
+          user_id: string
+        }
+        Update: {
+          ciphertext?: string
+          created_at?: string
+          id?: string
+          iv?: string
+          score?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          field: string | null
+          id: string
+          kdf_salt: string | null
+          onboarding_complete: boolean
+          plan: string
+          target_role: string | null
+          timeline: string | null
+          trial_ends_at: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          field?: string | null
+          id: string
+          kdf_salt?: string | null
+          onboarding_complete?: boolean
+          plan?: string
+          target_role?: string | null
+          timeline?: string | null
+          trial_ends_at?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          field?: string | null
+          id?: string
+          kdf_salt?: string | null
+          onboarding_complete?: boolean
+          plan?: string
+          target_role?: string | null
+          timeline?: string | null
+          trial_ends_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      roadmap_items: {
+        Row: {
+          assessment_id: string
+          block: number
+          ciphertext: string
+          created_at: string
+          done: boolean
+          id: string
+          iv: string
+          position: number
+          user_id: string
+        }
+        Insert: {
+          assessment_id: string
+          block?: number
+          ciphertext: string
+          created_at?: string
+          done?: boolean
+          id?: string
+          iv: string
+          position?: number
+          user_id: string
+        }
+        Update: {
+          assessment_id?: string
+          block?: number
+          ciphertext?: string
+          created_at?: string
+          done?: boolean
+          id?: string
+          iv?: string
+          position?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "roadmap_items_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "assessments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
