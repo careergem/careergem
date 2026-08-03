@@ -54,6 +54,8 @@ export type Database = {
           timeline: string | null
           trial_ends_at: string
           updated_at: string
+          verifier_ciphertext: string | null
+          verifier_iv: string | null
         }
         Insert: {
           created_at?: string
@@ -67,6 +69,8 @@ export type Database = {
           timeline?: string | null
           trial_ends_at?: string
           updated_at?: string
+          verifier_ciphertext?: string | null
+          verifier_iv?: string | null
         }
         Update: {
           created_at?: string
@@ -80,6 +84,8 @@ export type Database = {
           timeline?: string | null
           trial_ends_at?: string
           updated_at?: string
+          verifier_ciphertext?: string | null
+          verifier_iv?: string | null
         }
         Relationships: []
       }
