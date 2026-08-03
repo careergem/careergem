@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 
@@ -30,6 +31,11 @@ const HowItWorksRoute = HowItWorksRouteImport.update({
   path: '/how-it-works',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
@@ -45,6 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/onboarding': typeof OnboardingRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
 }
@@ -52,6 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/onboarding': typeof OnboardingRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
 }
@@ -60,21 +68,31 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/onboarding': typeof OnboardingRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/how-it-works' | '/pricing' | '/privacy'
+  fullPaths:
+    '/' | '/auth' | '/how-it-works' | '/onboarding' | '/pricing' | '/privacy'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/how-it-works' | '/pricing' | '/privacy'
-  id: '__root__' | '/' | '/auth' | '/how-it-works' | '/pricing' | '/privacy'
+  to: '/' | '/auth' | '/how-it-works' | '/onboarding' | '/pricing' | '/privacy'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/how-it-works'
+    | '/onboarding'
+    | '/pricing'
+    | '/privacy'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   HowItWorksRoute: typeof HowItWorksRoute
+  OnboardingRoute: typeof OnboardingRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
 }
@@ -102,6 +120,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HowItWorksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pricing': {
       id: '/pricing'
       path: '/pricing'
@@ -123,6 +148,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   HowItWorksRoute: HowItWorksRoute,
+  OnboardingRoute: OnboardingRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
 }
