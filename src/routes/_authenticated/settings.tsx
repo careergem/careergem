@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import { useSignOut } from "@/hooks/useSignOut";
 import { supabase } from "@/integrations/supabase/client";
 import { open } from "@/lib/crypto";
 import type { CareerReport } from "@/lib/assessment-schema";
@@ -30,7 +31,8 @@ export const Route = createFileRoute("/_authenticated/settings")({
 });
 
 function Settings() {
-  const { profile, session, vaultKey, signOut } = useAuth();
+  const { profile, session, vaultKey } = useAuth();
+  const signOut = useSignOut();
   const navigate = useNavigate();
   const [status, setStatus] = useState<string | null>(null);
 
