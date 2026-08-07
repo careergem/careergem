@@ -9,6 +9,12 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-hairline bg-background/85 backdrop-blur">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-signal focus:px-3 focus:py-2 focus:text-sm focus:text-signal-foreground"
+      >
+        Skip to content
+      </a>
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5">
         <Logo />
         <nav aria-label="Main" className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
@@ -43,6 +49,23 @@ export function SiteHeader() {
           )}
         </div>
       </div>
+
+      {/* The desktop nav is hidden below md, so keep the same destinations
+          reachable on small screens rather than relying on the footer. */}
+      <nav
+        aria-label="Main, compact"
+        className="flex gap-5 overflow-x-auto border-t border-hairline px-5 py-2.5 text-sm text-muted-foreground md:hidden"
+      >
+        <Link to="/how-it-works" className="whitespace-nowrap">
+          How it works
+        </Link>
+        <Link to="/pricing" className="whitespace-nowrap">
+          Pricing
+        </Link>
+        <Link to="/privacy" className="whitespace-nowrap">
+          Privacy
+        </Link>
+      </nav>
     </header>
   );
 }
