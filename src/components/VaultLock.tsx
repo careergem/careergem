@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
+import { useSignOut } from "@/hooks/useSignOut";
 import { Logo } from "@/components/Logo";
 
 /**
@@ -11,7 +12,8 @@ import { Logo } from "@/components/Logo";
  * tab, reload). The key is never stored, so the passphrase is needed again.
  */
 export function VaultLock() {
-  const { unlock, signOut, vaultMismatch } = useAuth();
+  const { unlock, vaultMismatch } = useAuth();
+  const signOut = useSignOut();
   const [passphrase, setPassphrase] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);

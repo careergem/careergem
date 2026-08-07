@@ -62,7 +62,7 @@ const steps = [
 
 function Landing() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-dvh">
       <SiteHeader />
 
       <main>

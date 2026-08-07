@@ -67,7 +67,7 @@ const plans = [
 
 function Pricing() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-dvh">
       <SiteHeader />
       <main className="mx-auto max-w-6xl px-5 py-20">
         <div className="max-w-2xl">

@@ -35,7 +35,7 @@ const rows: Array<[string, string]> = [
 
 function Privacy() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-dvh">
       <SiteHeader />
       <main className="mx-auto max-w-3xl px-5 py-20">
         <p className="font-mono text-xs uppercase tracking-[0.24em] text-signal">Privacy</p>
