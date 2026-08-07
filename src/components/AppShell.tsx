@@ -1,11 +1,11 @@
-import { Link, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
 import { Logo } from "@/components/Logo";
 import { VaultLock } from "@/components/VaultLock";
 import { Button } from "@/components/ui/button";
 import { hasAccess, trialDaysLeft, useAuth } from "@/hooks/useAuth";
+import { useSignOut } from "@/hooks/useSignOut";
 
 const links = [
   { to: "/dashboard", label: "Dashboard" },
@@ -14,22 +14,19 @@ const links = [
 ] as const;
 
 /**
- * Wraps every signed-in screen: auth redirect, vault gate, nav, trial banner.
+ * Wraps every signed-in screen: vault gate, nav, trial banner.
+ *
+ * Authentication itself is enforced by the `_authenticated` route gate, so no
+ * component-level redirect is needed (or wanted — it would race the router).
  */
 export function AppShell({ children }: { children: ReactNode }) {
-  const { session, loading, vaultKey, profile, signOut } = useAuth();
-  const navigate = useNavigate();
+  const { session, loading, vaultKey, profile } = useAuth();
+  const signOut = useSignOut();
 
-  useEffect(() => {
-    if (!loading && !session) {
-      void navigate({ to: "/auth", search: { mode: "signin" } });
-    }
-  }, [loading, session, navigate]);
-
-  if (loading || (!session && typeof window !== "undefined")) {
+  if (loading || !session) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-sm text-muted-foreground" role="status">
+      <div className="flex min-h-dvh items-center justify-center">
+        <p className="text-sm text-muted-foreground" role="status" aria-live="polite">
           Loading…
         </p>
       </div>
@@ -42,7 +39,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const paid = profile?.plan === "active";
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-dvh">
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-signal focus:px-3 focus:py-2 focus:text-sm focus:text-signal-foreground"
