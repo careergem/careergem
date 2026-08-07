@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { open } from "@/lib/crypto";
 import type { CareerReport } from "@/lib/assessment-schema";
 
-export const Route = createFileRoute("/settings")({
+export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({
     meta: [
       { title: "Settings — CareerOS" },

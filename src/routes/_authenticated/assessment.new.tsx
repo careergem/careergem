@@ -12,7 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { analyzeCareer } from "@/lib/assessment.functions";
 import { seal } from "@/lib/crypto";
 
-export const Route = createFileRoute("/assessment/new")({
+export const Route = createFileRoute("/_authenticated/assessment/new")({
   head: () => ({
     meta: [
       { title: "New assessment — CareerOS" },
