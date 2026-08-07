@@ -12,7 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { analyzeCareer } from "@/lib/assessment.functions";
 import { seal } from "@/lib/crypto";
 
-export const Route = createFileRoute("/assessment/new")({
+export const Route = createFileRoute("/_authenticated/assessment/new")({
   head: () => ({
     meta: [
       { title: "New assessment — CareerOS" },
@@ -157,9 +157,12 @@ function NewAssessment() {
           </p>
         ) : null}
 
-        <Button type="submit" size="lg" disabled={busy || locked}>
+        <Button type="submit" size="lg" disabled={busy || locked} aria-busy={busy}>
           {busy ? "Analyzing… this takes ~30 seconds" : "Run assessment"}
         </Button>
+        <p role="status" aria-live="polite" className="sr-only">
+          {busy ? "Analyzing your resume. This usually takes about 30 seconds." : ""}
+        </p>
         {locked ? (
           <p className="text-sm text-muted-foreground">
             Your trial has ended — subscribe to run new assessments.

@@ -9,7 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { subScoreLabels, type CareerReport } from "@/lib/assessment-schema";
 import { open } from "@/lib/crypto";
 
-export const Route = createFileRoute("/assessment/$id")({
+export const Route = createFileRoute("/_authenticated/assessment/$id")({
   head: () => ({
     meta: [
       { title: "Assessment report — CareerOS" },

@@ -44,12 +44,16 @@ export type Database = {
       profiles: {
         Row: {
           created_at: string
+          current_period_end: string | null
           display_name: string | null
           field: string | null
           id: string
           kdf_salt: string | null
           onboarding_complete: boolean
           plan: string
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          subscription_status: string | null
           target_role: string | null
           timeline: string | null
           trial_ends_at: string
@@ -59,12 +63,16 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          current_period_end?: string | null
           display_name?: string | null
           field?: string | null
           id: string
           kdf_salt?: string | null
           onboarding_complete?: boolean
           plan?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          subscription_status?: string | null
           target_role?: string | null
           timeline?: string | null
           trial_ends_at?: string
@@ -74,12 +82,16 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          current_period_end?: string | null
           display_name?: string | null
           field?: string | null
           id?: string
           kdf_salt?: string | null
           onboarding_complete?: boolean
           plan?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          subscription_status?: string | null
           target_role?: string | null
           timeline?: string | null
           trial_ends_at?: string

@@ -5,6 +5,8 @@ import { analyzeInputSchema } from "./assessment-schema";
 
 const TRIAL_ASSESSMENT_LIMIT = 1;
 const PAID_MONTHLY_LIMIT = 30;
+/** Minimum gap between two assessments for one account, in milliseconds. */
+const MIN_INTERVAL_MS = 60_000;
 
 /**
  * Generates a career assessment. Entitlement is verified server-side on every
@@ -51,6 +53,26 @@ export const analyzeCareer = createServerFn({ method: "POST" })
           ? "You have reached this month's assessment limit."
           : "Your trial includes one assessment. Subscribe for unlimited re-assessments.",
       );
+    }
+
+    // Per-account rate limit. Bounds inference cost and blocks rapid-fire abuse
+    // even for accounts that are within their quota.
+    const { data: recent, error: recentError } = await supabase
+      .from("assessments")
+      .select("created_at")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (recentError) throw new Error("Could not check your assessment usage.");
+
+    if (recent) {
+      const elapsed = Date.now() - new Date(recent.created_at).getTime();
+      if (elapsed < MIN_INTERVAL_MS) {
+        const wait = Math.ceil((MIN_INTERVAL_MS - elapsed) / 1000);
+        throw new Error(`Please wait ${wait} seconds before running another assessment.`);
+      }
     }
 
     const { runAssessment } = await import("./assessment.server");

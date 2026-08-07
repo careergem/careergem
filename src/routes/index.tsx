@@ -62,10 +62,10 @@ const steps = [
 
 function Landing() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-dvh">
       <SiteHeader />
 
-      <main>
+      <main id="main">
         <section className="relative overflow-hidden border-b border-hairline">
           <div aria-hidden="true" className="pointer-events-none absolute inset-0 grid-etch opacity-[0.35]" />
           <div
