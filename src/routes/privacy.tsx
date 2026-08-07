@@ -37,7 +37,7 @@ function Privacy() {
   return (
     <div className="min-h-dvh">
       <SiteHeader />
-      <main className="mx-auto max-w-3xl px-5 py-20">
+      <main id="main" className="mx-auto max-w-3xl px-5 py-20">
         <p className="font-mono text-xs uppercase tracking-[0.24em] text-signal">Privacy</p>
         <h1 className="mt-5 font-display text-4xl font-semibold leading-tight">
           We built CareerOS so that we cannot read your resume

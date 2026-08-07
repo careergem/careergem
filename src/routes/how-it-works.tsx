@@ -56,7 +56,7 @@ function HowItWorks() {
   return (
     <div className="min-h-dvh">
       <SiteHeader />
-      <main className="mx-auto max-w-3xl px-5 py-20">
+      <main id="main" className="mx-auto max-w-3xl px-5 py-20">
         <p className="font-mono text-xs uppercase tracking-[0.24em] text-signal">How it works</p>
         <h1 className="mt-5 font-display text-4xl font-semibold leading-tight">
           What actually happens inside an assessment
