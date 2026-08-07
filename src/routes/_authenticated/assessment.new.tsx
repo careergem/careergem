@@ -157,9 +157,12 @@ function NewAssessment() {
           </p>
         ) : null}
 
-        <Button type="submit" size="lg" disabled={busy || locked}>
+        <Button type="submit" size="lg" disabled={busy || locked} aria-busy={busy}>
           {busy ? "Analyzing… this takes ~30 seconds" : "Run assessment"}
         </Button>
+        <p role="status" aria-live="polite" className="sr-only">
+          {busy ? "Analyzing your resume. This usually takes about 30 seconds." : ""}
+        </p>
         {locked ? (
           <p className="text-sm text-muted-foreground">
             Your trial has ended — subscribe to run new assessments.
