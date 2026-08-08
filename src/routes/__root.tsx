@@ -79,19 +79,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "CareerGem — Your AI Career Strategist" },
+      { title: "CareerGem — Navigate Your Career Odyssey" },
       {
         name: "description",
         content:
-          "CareerGem scores your resume against a target role, names your real gaps, and hands you a 90-day plan. Encrypted in your browser.",
+          "CareerGem is your AI career navigator: score your resume against a target role, chart your real gaps, and launch a 90-day flight plan. Encrypted in-browser.",
       },
       { name: "author", content: "CareerGem" },
       { name: "theme-color", content: "#171b24" },
-      { property: "og:title", content: "CareerGem — Your AI Career Strategist" },
+      { property: "og:title", content: "CareerGem — Navigate Your Career Odyssey" },
       {
         property: "og:description",
         content:
-          "Stop guessing what to do next. Get a calibrated career score, a ranked gap analysis, and a 90-day roadmap.",
+          "CareerGem is your AI career navigator: score your resume against a target role, chart your real gaps, and launch a 90-day flight plan. Encrypted in-browser.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
