@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "sdk_version": "0.26.1",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://ocwjavgywiixqjfxhryy.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "careergem",
+      "version": "0.1.0",
+      "title": "CareerGem"
+    },
+    "tools": [
+      {
+        "name": "get_profile",
+        "title": "Get career profile",
+        "description": "Read the signed-in user's CareerGem profile: display name, target role, field, timeline, plan and trial status. Never returns encrypted career content.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_assessments",
+        "title": "List career assessments",
+        "description": "List the signed-in user's career assessments with their score and date, newest first. Report contents stay encrypted and are never returned.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991,
+              "description": "How many assessments to return (1-50). Defaults to 10."
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "roadmap_progress",
+        "title": "Roadmap progress",
+        "description": "Summarise 90-day roadmap progress for the signed-in user: completed vs total items per 30-day block. Item text is encrypted and never returned.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "assessment_id": {
+              "type": "string",
+              "description": "Optional assessment id from list_assessments. Defaults to the newest assessment."
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "set_roadmap_item_done",
+        "title": "Mark roadmap item done",
+        "description": "Mark one of the signed-in user's 90-day roadmap items as done or not done. Use roadmap_items ids seen in the CareerGem app.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "item_id": {
+              "type": "string",
+              "description": "The roadmap item id."
+            },
+            "done": {
+              "type": "boolean",
+              "description": "True to mark complete, false to reopen."
+            }
+          },
+          "required": [
+            "item_id",
+            "done"
+          ]
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
