@@ -9,9 +9,17 @@ import { useAuth } from "@/hooks/useAuth";
 
 type Mode = "signin" | "signup";
 
+/** Only same-origin relative paths may be used as a post-login redirect. */
+function safeNext(value: unknown): string | undefined {
+  if (typeof value !== "string") return undefined;
+  if (!value.startsWith("/") || value.startsWith("//")) return undefined;
+  return value;
+}
+
 export const Route = createFileRoute("/auth")({
-  validateSearch: (search: Record<string, unknown>): { mode: Mode } => ({
+  validateSearch: (search: Record<string, unknown>): { mode: Mode; next?: string | undefined } => ({
     mode: search["mode"] === "signup" ? "signup" : "signin",
+    next: safeNext(search["next"]),
   }),
   head: () => ({
     meta: [
@@ -33,7 +41,7 @@ export const Route = createFileRoute("/auth")({
 });
 
 function AuthPage() {
-  const { mode } = Route.useSearch();
+  const { mode, next } = Route.useSearch();
   const navigate = useNavigate();
   const { signIn, signUp, session, profile, vaultKey } = useAuth();
 
@@ -47,9 +55,13 @@ function AuthPage() {
 
   useEffect(() => {
     if (session && vaultKey) {
+      if (next) {
+        window.location.href = next;
+        return;
+      }
       void navigate({ to: profile?.onboarding_complete ? "/dashboard" : "/onboarding" });
     }
-  }, [session, vaultKey, profile, navigate]);
+  }, [session, vaultKey, profile, navigate, next]);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
