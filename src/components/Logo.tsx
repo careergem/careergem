@@ -11,10 +11,10 @@ export function Logo({ to = "/" }: { to?: string }) {
         aria-hidden="true"
         className="grid size-8 place-items-center rounded-md border border-signal/40 bg-signal/10 font-mono text-[13px] font-semibold text-signal transition-colors group-hover:bg-signal/20"
       >
-        C
+        ◆
       </span>
       <span className="font-display text-[17px] font-semibold tracking-tight">
-        Career<span className="text-signal">OS</span>
+        Career<span className="text-signal">Gem</span>
       </span>
     </Link>
   );
