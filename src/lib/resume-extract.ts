@@ -28,7 +28,7 @@ async function fromPdf(file: File): Promise<string> {
         .replace(/\s{2,}/g, " "),
     );
   }
-  await doc.destroy();
+  await doc.cleanup();
   return normalize(pages.join("\n\n"));
 }
 
