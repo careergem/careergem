@@ -1,4 +1,6 @@
-import { auth, defineMcp, type AnyToolDefinition } from "@lovable.dev/mcp-js";
+import { auth, defineMcp } from "@lovable.dev/mcp-js";
+
+type McpTools = Parameters<typeof defineMcp>[0]["tools"];
 
 import getProfileTool from "./tools/get-profile";
 import listAssessmentsTool from "./tools/list-assessments";
@@ -25,5 +27,5 @@ export default defineMcp({
     listAssessmentsTool,
     roadmapProgressTool,
     setRoadmapItemDoneTool,
-  ] as unknown as AnyToolDefinition[],
+  ] as unknown as McpTools,
 });
