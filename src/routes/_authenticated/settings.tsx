@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
+import { SubscriptionPanel } from "@/components/SubscriptionPanel";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useSignOut } from "@/hooks/useSignOut";
@@ -9,7 +10,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { open } from "@/lib/crypto";
 import type { CareerReport } from "@/lib/assessment-schema";
 
+import { z } from "zod";
+
+const settingsSearchSchema = z.object({
+  billing: z.enum(["success", "canceled"]).optional(),
+});
+
 export const Route = createFileRoute("/_authenticated/settings")({
+  validateSearch: settingsSearchSchema,
   head: () => ({
     meta: [
       { title: "Settings — CareerOS" },
@@ -32,6 +40,7 @@ export const Route = createFileRoute("/_authenticated/settings")({
 
 function Settings() {
   const { profile, session, vaultKey } = useAuth();
+  const { billing } = Route.useSearch();
   const signOut = useSignOut();
   const navigate = useNavigate();
   const [status, setStatus] = useState<string | null>(null);
@@ -120,6 +129,8 @@ function Settings() {
           unreadable without your password.
         </p>
       </section>
+
+      <SubscriptionPanel billingFlag={billing} />
 
       <section className="rounded-xl border border-hairline bg-surface p-7">
         <h2 className="font-display text-lg font-semibold">Your data</h2>
