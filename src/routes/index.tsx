@@ -6,17 +6,17 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "CareerGem — Know exactly what to do next" },
+      { title: "CareerGem — Navigate Your Career Odyssey" },
       {
         name: "description",
         content:
-          "CareerGem scores your resume against a target role, ranks your real gaps, and gives you a 90-day plan. Encrypted in your browser — only you can read it.",
+          "CareerGem is your AI career navigator: score your resume against a target role, chart your real gaps, and launch a 90-day flight plan. Encrypted in-browser.",
       },
-      { property: "og:title", content: "CareerGem — Know exactly what to do next" },
+      { property: "og:title", content: "CareerGem — Navigate Your Career Odyssey" },
       {
         property: "og:description",
         content:
-          "A calibrated career score, a ranked gap analysis, and a 90-day roadmap for early-career engineers.",
+          "CareerGem is your AI career navigator: score your resume against a target role, chart your real gaps, and launch a 90-day flight plan. Encrypted in-browser.",
       },
     ],
     scripts: [
