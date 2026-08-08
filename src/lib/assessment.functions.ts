@@ -1,12 +1,77 @@
 import { createServerFn } from "@tanstack/react-start";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { analyzeInputSchema } from "./assessment-schema";
+import { analyzeInputSchema, type CareerReport } from "./assessment-schema";
+import { entitlementFor, type Entitlement } from "./entitlements";
 
-const TRIAL_ASSESSMENT_LIMIT = 1;
-const PAID_MONTHLY_LIMIT = 30;
 /** Minimum gap between two assessments for one account, in milliseconds. */
 const MIN_INTERVAL_MS = 60_000;
+const WINDOW_MS = 30 * 86_400_000;
+
+type Usage = {
+  entitlement: Entitlement;
+  used: number;
+  remaining: number | null;
+  windowResetsAt: string | null;
+};
+
+async function readUsage(
+  supabase: { from: (table: string) => any },
+  userId: string,
+): Promise<Usage> {
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("plan")
+    .eq("id", userId)
+    .maybeSingle();
+  if (profileError) throw new Error("Could not verify your account.");
+
+  const entitlement = entitlementFor(profile?.plan);
+  const since = new Date(Date.now() - WINDOW_MS).toISOString();
+
+  const { data: rows, error: rowsError } = await supabase
+    .from("assessments")
+    .select("created_at")
+    .eq("user_id", userId)
+    .gte("created_at", since)
+    .order("created_at", { ascending: true });
+  if (rowsError) throw new Error("Could not check your assessment usage.");
+
+  const used = rows?.length ?? 0;
+  const oldest = rows?.[0]?.created_at as string | undefined;
+
+  return {
+    entitlement,
+    used,
+    remaining:
+      entitlement.assessmentsPerMonth === null
+        ? null
+        : Math.max(0, entitlement.assessmentsPerMonth - used),
+    windowResetsAt:
+      entitlement.assessmentsPerMonth !== null && oldest
+        ? new Date(new Date(oldest).getTime() + WINDOW_MS).toISOString()
+        : null,
+  };
+}
+
+/** What the signed-in account is allowed to do right now. Server is authoritative. */
+export const getAssessmentUsage = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => readUsage(context.supabase as never, context.userId));
+
+/** Applies the free-tier ceiling to a generated report before it leaves the server. */
+function applyTier(report: CareerReport, entitlement: Entitlement): CareerReport {
+  const roles = report.roles.slice(0, entitlement.roleLimit).map((role) => ({
+    ...role,
+    actions: (entitlement.actionsPerRole
+      ? role.actions.slice(0, entitlement.actionsPerRole)
+      : role.actions
+    ).map((action) =>
+      entitlement.resources ? action : { ...action, resource: null, timeEstimate: null },
+    ),
+  }));
+  return { ...report, roles };
+}
 
 /**
  * Generates a career assessment. Entitlement is verified server-side on every
@@ -18,40 +83,19 @@ export const analyzeCareer = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => analyzeInputSchema.parse(input))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
+    const usage = await readUsage(supabase as never, userId);
+    const { entitlement } = usage;
 
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("plan, trial_ends_at")
-      .eq("id", userId)
-      .maybeSingle();
-
-    if (profileError) throw new Error("Could not verify your account.");
-    if (!profile) throw new Error("Your profile is not ready yet. Try again in a moment.");
-
-    const trialActive = new Date(profile.trial_ends_at).getTime() > Date.now();
-    const paid = profile.plan === "active";
-    if (!paid && !trialActive) {
-      throw new Error("Your free trial has ended. Subscribe to run more assessments.");
+    if (usage.remaining !== null && usage.remaining <= 0) {
+      throw new Error(
+        "Your free plan includes one assessment a month. Upgrade to Pro for unlimited assessments.",
+      );
     }
 
-    const since = paid
-      ? new Date(Date.now() - 30 * 86400000).toISOString()
-      : new Date(0).toISOString();
-
-    const { count, error: countError } = await supabase
-      .from("assessments")
-      .select("id", { count: "exact", head: true })
-      .eq("user_id", userId)
-      .gte("created_at", since);
-
-    if (countError) throw new Error("Could not check your assessment usage.");
-
-    const limit = paid ? PAID_MONTHLY_LIMIT : TRIAL_ASSESSMENT_LIMIT;
-    if ((count ?? 0) >= limit) {
+    const roles = data.targetRoles.slice(0, entitlement.roleLimit);
+    if (data.targetRoles.length > entitlement.roleLimit) {
       throw new Error(
-        paid
-          ? "You have reached this month's assessment limit."
-          : "Your trial includes one assessment. Subscribe for unlimited re-assessments.",
+        `Your plan covers ${entitlement.roleLimit} target role${entitlement.roleLimit === 1 ? "" : "s"} per assessment.`,
       );
     }
 
@@ -64,7 +108,6 @@ export const analyzeCareer = createServerFn({ method: "POST" })
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle();
-
     if (recentError) throw new Error("Could not check your assessment usage.");
 
     if (recent) {
@@ -76,11 +119,15 @@ export const analyzeCareer = createServerFn({ method: "POST" })
     }
 
     const { runAssessment } = await import("./assessment.server");
-    return runAssessment({
+    const report = await runAssessment({
       resumeText: data.resumeText,
-      targetRole: data.targetRole,
+      targetRoles: roles,
       jobDescription: data.jobDescription ?? "",
       field: data.field ?? "",
       timeline: data.timeline ?? "",
+      experienceLevel: data.experienceLevel ?? "",
+      knownGaps: data.knownGaps ?? [],
     });
+
+    return { report: applyTier(report, entitlement), entitlement };
   });
