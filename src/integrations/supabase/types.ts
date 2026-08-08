@@ -41,8 +41,27 @@ export type Database = {
         }
         Relationships: []
       }
+      processed_stripe_events: {
+        Row: {
+          event_id: string
+          event_type: string
+          processed_at: string
+        }
+        Insert: {
+          event_id: string
+          event_type: string
+          processed_at?: string
+        }
+        Update: {
+          event_id?: string
+          event_type?: string
+          processed_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
+          cancel_at_period_end: boolean
           created_at: string
           current_period_end: string | null
           display_name: string | null
@@ -62,6 +81,7 @@ export type Database = {
           verifier_iv: string | null
         }
         Insert: {
+          cancel_at_period_end?: boolean
           created_at?: string
           current_period_end?: string | null
           display_name?: string | null
@@ -81,6 +101,7 @@ export type Database = {
           verifier_iv?: string | null
         }
         Update: {
+          cancel_at_period_end?: boolean
           created_at?: string
           current_period_end?: string | null
           display_name?: string | null
