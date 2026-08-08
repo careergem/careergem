@@ -68,16 +68,19 @@ function Landing() {
       <main id="main">
         <section className="relative overflow-hidden border-b border-hairline">
           <div aria-hidden="true" className="pointer-events-none absolute inset-0 grid-etch opacity-[0.35]" />
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 starfield opacity-70" />
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 aurora" />
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -right-40 -top-40 size-[520px] rounded-full bg-signal/10 blur-3xl"
+            className="pointer-events-none absolute -right-40 -top-40 size-[520px] rounded-full bg-nebula/15 blur-3xl"
           />
           <div className="relative mx-auto max-w-6xl px-5 py-24 sm:py-32">
             <p className="font-mono text-xs uppercase tracking-[0.24em] text-signal">
               Job hunting for STEM, made digestible
             </p>
             <h1 className="mt-6 max-w-3xl text-balance-tight font-display text-4xl font-semibold leading-[1.05] sm:text-6xl">
-              Stop collecting career advice. Start knowing your next move.
+              Stop collecting career advice.{" "}
+              <span className="text-orbit">Start knowing your next move.</span>
             </h1>
             <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
               Every rejection teaches you something six months too late. CareerGem reads your
@@ -148,15 +151,17 @@ function Landing() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-5 py-24 text-center">
-          <h2 className="mx-auto max-w-2xl font-display text-3xl font-semibold sm:text-4xl">
+        <section className="relative overflow-hidden px-5 py-24 text-center">
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 aurora opacity-80" />
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 starfield opacity-50" />
+          <h2 className="relative mx-auto max-w-2xl font-display text-3xl font-semibold sm:text-4xl">
             One assessment is enough to see what you have been missing.
           </h2>
-          <p className="mx-auto mt-5 max-w-xl text-muted-foreground">
+          <p className="relative mx-auto mt-5 max-w-xl text-muted-foreground">
             Fourteen days free. Then $15 a month — less than a single day of the salary you
             are leaving on the table.
           </p>
-          <Button asChild size="lg" className="mt-9">
+          <Button asChild size="lg" className="relative mt-9">
             <Link to="/auth" search={{ mode: "signup" }}>
               Get my career score
             </Link>

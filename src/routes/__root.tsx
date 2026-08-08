@@ -90,7 +90,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "CareerGem is your AI career navigator: score your resume against a target role, chart your real gaps, and launch a 90-day flight plan. Encrypted in-browser.",
       },
       { name: "author", content: "CareerGem" },
-      { name: "theme-color", content: "#171b24" },
+      { name: "theme-color", content: "#0d1020" },
       { property: "og:title", content: "CareerGem — Navigate Your Career Odyssey" },
       {
         property: "og:description",
