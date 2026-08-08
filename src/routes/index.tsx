@@ -74,15 +74,16 @@ function Landing() {
           />
           <div className="relative mx-auto max-w-6xl px-5 py-24 sm:py-32">
             <p className="font-mono text-xs uppercase tracking-[0.24em] text-signal">
-              The operating system for your career
+              Job hunting for STEM, made digestible
             </p>
             <h1 className="mt-6 max-w-3xl text-balance-tight font-display text-4xl font-semibold leading-[1.05] sm:text-6xl">
               Stop collecting career advice. Start knowing your next move.
             </h1>
             <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
               Every rejection teaches you something six months too late. CareerGem reads your
-              resume the way a hiring manager reads it, tells you the exact gaps standing
-              between you and the role you want, and hands you a 90-day plan to close them.
+              resume the way a hiring manager reads it, breaks the STEM job hunt into steps you
+              can actually act on, and hands you a 90-day plan that turns guesswork into a
+              confident candidacy.
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-3">
               <Button asChild size="lg">
