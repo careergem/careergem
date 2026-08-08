@@ -2,11 +2,13 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
+import { RolePicker } from "@/components/RolePicker";
+import { useAssessmentUsage } from "@/components/UsageBanner";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { commonGaps, experienceLevels, FREE_ROLE_LIMIT } from "@/lib/assessment-schema";
 
 export const Route = createFileRoute("/_authenticated/onboarding")({
   head: () => ({
@@ -15,12 +17,12 @@ export const Route = createFileRoute("/_authenticated/onboarding")({
       {
         name: "description",
         content:
-          "Tell CareerGem your field, target role, and timeline so every assessment is scored against the job you actually want.",
+          "Tell CareerGem your field, target roles, experience level, and timeline so every assessment is scored against the jobs you actually want.",
       },
       { property: "og:title", content: "Set up your CareerGem profile" },
       {
         property: "og:description",
-        content: "Field, target role, and timeline — the context behind every assessment.",
+        content: "Field, target roles, experience, and timeline — the context behind every assessment.",
       },
       { name: "robots", content: "noindex" },
     ],
@@ -52,23 +54,43 @@ const timelines = [
 function Onboarding() {
   const { profile, refreshProfile } = useAuth();
   const navigate = useNavigate();
+  const { data: usage } = useAssessmentUsage();
+  const roleLimit = usage?.entitlement.roleLimit ?? FREE_ROLE_LIMIT;
 
   const [field, setField] = useState(profile?.field ?? fields[0]!);
-  const [targetRole, setTargetRole] = useState(profile?.target_role ?? "");
+  const [roles, setRoles] = useState<string[]>(
+    profile?.target_roles?.length
+      ? profile.target_roles
+      : profile?.target_role
+        ? [profile.target_role]
+        : [],
+  );
+  const [experience, setExperience] = useState(profile?.experience_level ?? "");
+  const [gaps, setGaps] = useState<string[]>(profile?.known_gaps ?? []);
   const [timeline, setTimeline] = useState(profile?.timeline ?? timelines[0]!);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  function toggleGap(gap: string) {
+    setGaps((current) =>
+      current.includes(gap) ? current.filter((item) => item !== gap) : [...current, gap].slice(0, 10),
+    );
+  }
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     setBusy(true);
     setError(null);
     try {
+      const trimmed = roles.map((role) => role.trim()).filter(Boolean).slice(0, 5);
       const { error: updateError } = await supabase
         .from("profiles")
         .update({
           field,
-          target_role: targetRole.trim(),
+          target_roles: trimmed,
+          target_role: trimmed[0] ?? "Software Engineer",
+          experience_level: experience || null,
+          known_gaps: gaps,
           timeline,
           onboarding_complete: true,
         })
@@ -86,15 +108,14 @@ function Onboarding() {
   return (
     <div className="mx-auto max-w-xl">
       <p className="font-mono text-xs uppercase tracking-[0.24em] text-signal">Step 1 of 2</p>
-      <h1 className="mt-4 font-display text-3xl font-semibold">
-        What are you aiming at?
-      </h1>
+      <h1 className="mt-4 font-display text-3xl font-semibold">What are you aiming at?</h1>
       <p className="mt-3 text-muted-foreground">
-        These three answers set the bar your resume is scored against. They are stored in plain
-        text so the app can use them as context — nothing here is your resume.
+        These answers set the bar your resume is scored against. Everything here is optional except
+        your field, and it is stored in plain text so the app can use it as context — none of it is
+        your resume.
       </p>
 
-      <form onSubmit={handleSubmit} className="mt-9 space-y-6">
+      <form onSubmit={handleSubmit} className="mt-9 space-y-8">
         <fieldset className="space-y-3">
           <legend className="text-sm font-medium">Your field</legend>
           <div className="grid gap-2 sm:grid-cols-2">
@@ -121,23 +142,51 @@ function Onboarding() {
           </div>
         </fieldset>
 
-        <div className="space-y-2">
-          <Label htmlFor="target-role">Target role</Label>
-          <Input
-            id="target-role"
-            placeholder="e.g. Backend Engineer at a mid-size SaaS company"
-            value={targetRole}
-            onChange={(event) => setTargetRole(event.target.value)}
-            required
-            aria-describedby="target-role-hint"
-          />
-          <p id="target-role-hint" className="text-xs text-muted-foreground">
-            Be specific. "Engineer" scores worse than "Backend Engineer, Go, fintech".
-          </p>
+        <div className="space-y-3">
+          <Label htmlFor="target-roles">Target roles (optional)</Label>
+          <RolePicker value={roles} onChange={setRoles} max={roleLimit} />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="timeline">Timeline</Label>
+          <Label htmlFor="experience">Experience level (optional)</Label>
+          <select
+            id="experience"
+            value={experience}
+            onChange={(event) => setExperience(event.target.value)}
+            className="h-10 w-full rounded-md border border-input bg-surface px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <option value="">Prefer not to say</option>
+            {experienceLevels.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <fieldset className="space-y-3">
+          <legend className="text-sm font-medium">Gaps you already suspect (optional)</legend>
+          <div className="flex flex-wrap gap-2">
+            {commonGaps.map((gap) => (
+              <button
+                key={gap}
+                type="button"
+                onClick={() => toggleGap(gap)}
+                aria-pressed={gaps.includes(gap)}
+                className={`rounded-full border px-3 py-1.5 text-xs transition-colors ${
+                  gaps.includes(gap)
+                    ? "border-signal/60 bg-surface-raised text-foreground"
+                    : "border-hairline text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {gap}
+              </button>
+            ))}
+          </div>
+        </fieldset>
+
+        <div className="space-y-2">
+          <Label htmlFor="timeline">Timeline (optional)</Label>
           <select
             id="timeline"
             value={timeline}
