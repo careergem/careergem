@@ -23,7 +23,7 @@ function formatDate(value: string | null): string {
 }
 
 /** Reads entitlement state written by verified Stripe webhooks only. */
-export function SubscriptionPanel({ billingFlag }: { billingFlag?: string }) {
+export function SubscriptionPanel({ billingFlag }: { billingFlag?: string | undefined }) {
   const { profile } = useAuth();
   const { checkout, openPortal, pending, error } = useBilling();
 
