@@ -20,6 +20,7 @@ export type Database = {
           created_at: string
           id: string
           iv: string
+          role_count: number
           score: number | null
           user_id: string
         }
@@ -28,6 +29,7 @@ export type Database = {
           created_at?: string
           id?: string
           iv: string
+          role_count?: number
           score?: number | null
           user_id: string
         }
@@ -36,6 +38,7 @@ export type Database = {
           created_at?: string
           id?: string
           iv?: string
+          role_count?: number
           score?: number | null
           user_id?: string
         }
@@ -65,15 +68,18 @@ export type Database = {
           created_at: string
           current_period_end: string | null
           display_name: string | null
+          experience_level: string | null
           field: string | null
           id: string
           kdf_salt: string | null
+          known_gaps: string[]
           onboarding_complete: boolean
           plan: string
           stripe_customer_id: string | null
           stripe_subscription_id: string | null
           subscription_status: string | null
           target_role: string | null
+          target_roles: string[]
           timeline: string | null
           trial_ends_at: string
           updated_at: string
@@ -85,15 +91,18 @@ export type Database = {
           created_at?: string
           current_period_end?: string | null
           display_name?: string | null
+          experience_level?: string | null
           field?: string | null
           id: string
           kdf_salt?: string | null
+          known_gaps?: string[]
           onboarding_complete?: boolean
           plan?: string
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
           subscription_status?: string | null
           target_role?: string | null
+          target_roles?: string[]
           timeline?: string | null
           trial_ends_at?: string
           updated_at?: string
@@ -105,15 +114,18 @@ export type Database = {
           created_at?: string
           current_period_end?: string | null
           display_name?: string | null
+          experience_level?: string | null
           field?: string | null
           id?: string
           kdf_salt?: string | null
+          known_gaps?: string[]
           onboarding_complete?: boolean
           plan?: string
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
           subscription_status?: string | null
           target_role?: string | null
+          target_roles?: string[]
           timeline?: string | null
           trial_ends_at?: string
           updated_at?: string
