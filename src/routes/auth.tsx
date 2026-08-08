@@ -189,7 +189,7 @@ function AuthPage() {
           </form>
 
           <p className="mt-6 text-sm text-muted-foreground">
-            {isSignup ? "Already have an account? " : "New to CareerOS? "}
+            {isSignup ? "Already have an account? " : "New to CareerGem? "}
             <Link
               to="/auth"
               search={{ mode: isSignup ? "signin" : "signup" }}

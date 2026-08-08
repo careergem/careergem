@@ -80,7 +80,7 @@ function Landing() {
               Stop collecting career advice. Start knowing your next move.
             </h1>
             <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
-              Every rejection teaches you something six months too late. CareerOS reads your
+              Every rejection teaches you something six months too late. CareerGem reads your
               resume the way a hiring manager reads it, tells you the exact gaps standing
               between you and the role you want, and hands you a 90-day plan to close them.
             </p>

@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * CareerOS design system — "instrument panel".
+ * CareerGem design system — "instrument panel".
  * Deep ink base, signal amber for action, cool cyan for data.
  * All colors are oklch semantic tokens. Never hardcode colors in components.
  */

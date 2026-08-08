@@ -1,5 +1,5 @@
 /**
- * Client-side encryption for CareerOS.
+ * Client-side encryption for CareerGem.
  *
  * Every piece of career content (resume text, generated reports, roadmap
  * actions) is encrypted in the browser with AES-GCM. The key is derived from

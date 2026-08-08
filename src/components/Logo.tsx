@@ -5,7 +5,7 @@ export function Logo({ to = "/" }: { to?: string }) {
     <Link
       to={to}
       className="group inline-flex items-center gap-2.5 rounded-sm"
-      aria-label="CareerOS home"
+      aria-label="CareerGem home"
     >
       <span
         aria-hidden="true"
