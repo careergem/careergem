@@ -15,16 +15,16 @@ export const Route = createFileRoute("/auth")({
   }),
   head: () => ({
     meta: [
-      { title: "Sign in to CareerOS" },
+      { title: "Sign in to CareerGem" },
       {
         name: "description",
         content:
-          "Sign in or create your CareerOS account. Your career data is encrypted in your browser with a key only you hold.",
+          "Sign in or create your CareerGem account. Your career data is encrypted in your browser with a key only you hold.",
       },
-      { property: "og:title", content: "Sign in to CareerOS" },
+      { property: "og:title", content: "Sign in to CareerGem" },
       {
         property: "og:description",
-        content: "Create your encrypted CareerOS account and get your career score.",
+        content: "Create your encrypted CareerGem account and get your career score.",
       },
       { name: "robots", content: "noindex" },
     ],

@@ -20,13 +20,13 @@ export const Route = createFileRoute("/_authenticated/settings")({
   validateSearch: settingsSearchSchema,
   head: () => ({
     meta: [
-      { title: "Settings — CareerOS" },
+      { title: "Settings — CareerGem" },
       {
         name: "description",
         content:
-          "Manage your CareerOS account: see what is stored, export everything decrypted, or delete all of your data permanently.",
+          "Manage your CareerGem account: see what is stored, export everything decrypted, or delete all of your data permanently.",
       },
-      { property: "og:title", content: "Settings — CareerOS" },
+      { property: "og:title", content: "Settings — CareerGem" },
       { property: "og:description", content: "Export or permanently delete your data." },
       { name: "robots", content: "noindex" },
     ],

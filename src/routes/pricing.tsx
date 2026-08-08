@@ -14,13 +14,13 @@ export const Route = createFileRoute("/pricing")({
   validateSearch: pricingSearchSchema,
   head: () => ({
     meta: [
-      { title: "CareerOS pricing — 14 days free, then $15/month" },
+      { title: "CareerGem pricing — 14 days free, then $15/month" },
       {
         name: "description",
         content:
           "Start with a 14-day free trial including one full assessment. Then $15/month or $120/year for unlimited re-assessments and roadmap tracking.",
       },
-      { property: "og:title", content: "CareerOS pricing" },
+      { property: "og:title", content: "CareerGem pricing" },
       {
         property: "og:description",
         content: "14 days free, then $15/month or $120/year for unlimited assessments.",

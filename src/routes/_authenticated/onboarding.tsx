@@ -11,13 +11,13 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/_authenticated/onboarding")({
   head: () => ({
     meta: [
-      { title: "Set up your CareerOS profile" },
+      { title: "Set up your CareerGem profile" },
       {
         name: "description",
         content:
-          "Tell CareerOS your field, target role, and timeline so every assessment is scored against the job you actually want.",
+          "Tell CareerGem your field, target role, and timeline so every assessment is scored against the job you actually want.",
       },
-      { property: "og:title", content: "Set up your CareerOS profile" },
+      { property: "og:title", content: "Set up your CareerGem profile" },
       {
         property: "og:description",
         content: "Field, target role, and timeline — the context behind every assessment.",

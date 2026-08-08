@@ -15,13 +15,13 @@ import { seal } from "@/lib/crypto";
 export const Route = createFileRoute("/_authenticated/assessment/new")({
   head: () => ({
     meta: [
-      { title: "New assessment — CareerOS" },
+      { title: "New assessment — CareerGem" },
       {
         name: "description",
         content:
           "Paste your resume and target role to get a calibrated career score, ranked gaps, and a 90-day roadmap.",
       },
-      { property: "og:title", content: "New assessment — CareerOS" },
+      { property: "og:title", content: "New assessment — CareerGem" },
       { property: "og:description", content: "Get your career score, gaps, and 90-day plan." },
       { name: "robots", content: "noindex" },
     ],

@@ -10,13 +10,13 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
-      { title: "Your CareerOS dashboard" },
+      { title: "Your CareerGem dashboard" },
       {
         name: "description",
         content:
           "Your career score history, latest assessment, and roadmap progress — all decrypted locally in your browser.",
       },
-      { property: "og:title", content: "Your CareerOS dashboard" },
+      { property: "og:title", content: "Your CareerGem dashboard" },
       { property: "og:description", content: "Career score history and roadmap progress." },
       { name: "robots", content: "noindex" },
     ],

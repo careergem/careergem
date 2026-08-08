@@ -6,13 +6,13 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/how-it-works")({
   head: () => ({
     meta: [
-      { title: "How CareerOS works — score, gaps, 90-day plan" },
+      { title: "How CareerGem works — score, gaps, 90-day plan" },
       {
         name: "description",
         content:
-          "Inside a CareerOS assessment: how the career score is calibrated, how gaps are ranked by impact, and how the 90-day roadmap is built.",
+          "Inside a CareerGem assessment: how the career score is calibrated, how gaps are ranked by impact, and how the 90-day roadmap is built.",
       },
-      { property: "og:title", content: "How CareerOS works" },
+      { property: "og:title", content: "How CareerGem works" },
       {
         property: "og:description",
         content:
