@@ -79,6 +79,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      {
+        name: "google-site-verification",
+        content: "FqW11lI3qXPVg4LWMsrSDjqgZPY2-ozuSBWzBjKG6KY",
+      },
       { title: "CareerGem — Navigate Your Career Odyssey" },
       {
         name: "description",
