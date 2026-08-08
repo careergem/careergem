@@ -6,13 +6,13 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "CareerOS — Know exactly what to do next" },
+      { title: "CareerGem — Know exactly what to do next" },
       {
         name: "description",
         content:
-          "CareerOS scores your resume against a target role, ranks your real gaps, and gives you a 90-day plan. Encrypted in your browser — only you can read it.",
+          "CareerGem scores your resume against a target role, ranks your real gaps, and gives you a 90-day plan. Encrypted in your browser — only you can read it.",
       },
-      { property: "og:title", content: "CareerOS — Know exactly what to do next" },
+      { property: "og:title", content: "CareerGem — Know exactly what to do next" },
       {
         property: "og:description",
         content:
@@ -25,7 +25,7 @@ export const Route = createFileRoute("/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "SoftwareApplication",
-          name: "CareerOS",
+          name: "CareerGem",
           applicationCategory: "BusinessApplication",
           operatingSystem: "Web, iOS, Android",
           description:

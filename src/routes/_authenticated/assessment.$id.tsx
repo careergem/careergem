@@ -12,13 +12,13 @@ import { open } from "@/lib/crypto";
 export const Route = createFileRoute("/_authenticated/assessment/$id")({
   head: () => ({
     meta: [
-      { title: "Assessment report — CareerOS" },
+      { title: "Assessment report — CareerGem" },
       {
         name: "description",
         content:
           "Your decrypted career assessment: score, sub-scores, ranked gaps, and your 90-day roadmap.",
       },
-      { property: "og:title", content: "Assessment report — CareerOS" },
+      { property: "og:title", content: "Assessment report — CareerGem" },
       { property: "og:description", content: "Score, gaps, and your 90-day roadmap." },
       { name: "robots", content: "noindex" },
     ],

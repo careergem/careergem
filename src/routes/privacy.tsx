@@ -6,13 +6,13 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
-      { title: "Privacy at CareerOS — encrypted in your browser" },
+      { title: "Privacy at CareerGem — encrypted in your browser" },
       {
         name: "description",
         content:
-          "How CareerOS handles your data: browser-side AES-GCM encryption, a key derived from your password that never leaves your device, and one-click deletion.",
+          "How CareerGem handles your data: browser-side AES-GCM encryption, a key derived from your password that never leaves your device, and one-click deletion.",
       },
-      { property: "og:title", content: "Privacy at CareerOS" },
+      { property: "og:title", content: "Privacy at CareerGem" },
       {
         property: "og:description",
         content:

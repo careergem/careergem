@@ -79,15 +79,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "CareerOS — Your AI Career Strategist" },
+      { title: "CareerGem — Your AI Career Strategist" },
       {
         name: "description",
         content:
-          "CareerOS scores your resume against a target role, names your real gaps, and hands you a 90-day plan. Encrypted in your browser.",
+          "CareerGem scores your resume against a target role, names your real gaps, and hands you a 90-day plan. Encrypted in your browser.",
       },
-      { name: "author", content: "CareerOS" },
+      { name: "author", content: "CareerGem" },
       { name: "theme-color", content: "#171b24" },
-      { property: "og:title", content: "CareerOS — Your AI Career Strategist" },
+      { property: "og:title", content: "CareerGem — Your AI Career Strategist" },
       {
         property: "og:description",
         content:
