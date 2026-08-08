@@ -1,4 +1,4 @@
-import { auth, defineMcp } from "@lovable.dev/mcp-js";
+import { auth, defineMcp, type AnyToolDefinition } from "@lovable.dev/mcp-js";
 
 import getProfileTool from "./tools/get-profile";
 import listAssessmentsTool from "./tools/list-assessments";
@@ -19,5 +19,11 @@ export default defineMcp({
     issuer: `https://${projectRef}.supabase.co/auth/v1`,
     acceptedAudiences: "authenticated",
   }),
-  tools: [getProfileTool, listAssessmentsTool, roadmapProgressTool, setRoadmapItemDoneTool],
+  // Cast: the SDK's tool type requires outputSchema under exactOptionalPropertyTypes.
+  tools: [
+    getProfileTool,
+    listAssessmentsTool,
+    roadmapProgressTool,
+    setRoadmapItemDoneTool,
+  ] as unknown as AnyToolDefinition[],
 });
