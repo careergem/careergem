@@ -20,6 +20,9 @@ export type Profile = {
   verifier_iv: string | null;
   onboarding_complete: boolean;
   target_role: string | null;
+  target_roles: string[];
+  experience_level: string | null;
+  known_gaps: string[];
   field: string | null;
   timeline: string | null;
   subscription_status: string | null;
@@ -48,7 +51,7 @@ async function loadProfile(userId: string): Promise<Profile | null> {
   const { data, error } = await supabase
     .from("profiles")
     .select(
-      "id, display_name, plan, trial_ends_at, kdf_salt, verifier_ciphertext, verifier_iv, onboarding_complete, target_role, field, timeline, subscription_status, current_period_end, cancel_at_period_end, stripe_customer_id",
+      "id, display_name, plan, trial_ends_at, kdf_salt, verifier_ciphertext, verifier_iv, onboarding_complete, target_role, target_roles, experience_level, known_gaps, field, timeline, subscription_status, current_period_end, cancel_at_period_end, stripe_customer_id",
     )
     .eq("id", userId)
     .maybeSingle();
