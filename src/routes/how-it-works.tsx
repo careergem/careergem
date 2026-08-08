@@ -62,7 +62,7 @@ function HowItWorks() {
           What actually happens inside an assessment
         </h1>
         <p className="mt-5 text-lg text-muted-foreground">
-          CareerOS does not write your resume for you. It tells you what a hiring manager
+          CareerGem does not write your resume for you. It tells you what a hiring manager
           sees, what is missing, and what to do about it in the next 90 days.
         </p>
 

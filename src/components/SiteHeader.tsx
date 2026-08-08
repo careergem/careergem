@@ -31,7 +31,7 @@ export function SiteHeader() {
         <div className="flex items-center gap-2">
           {session ? (
             <Button asChild size="sm">
-              <Link to="/dashboard">Open CareerOS</Link>
+              <Link to="/dashboard">Open CareerGem</Link>
             </Button>
           ) : (
             <>
@@ -74,7 +74,7 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-hairline bg-surface/40">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-10 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-        <p>&copy; {new Date().getFullYear()} CareerOS. Your data stays yours.</p>
+        <p>&copy; {new Date().getFullYear()} CareerGem. Your data stays yours.</p>
         <nav aria-label="Footer" className="flex flex-wrap gap-5">
           <Link to="/how-it-works" className="transition-colors hover:text-foreground">
             How it works

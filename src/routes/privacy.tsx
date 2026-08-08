@@ -40,10 +40,10 @@ function Privacy() {
       <main id="main" className="mx-auto max-w-3xl px-5 py-20">
         <p className="font-mono text-xs uppercase tracking-[0.24em] text-signal">Privacy</p>
         <h1 className="mt-5 font-display text-4xl font-semibold leading-tight">
-          We built CareerOS so that we cannot read your resume
+          We built CareerGem so that we cannot read your resume
         </h1>
         <p className="mt-5 text-lg text-muted-foreground">
-          This page is maintained by the CareerOS team to describe how the app handles your
+          This page is maintained by the CareerGem team to describe how the app handles your
           data. It is a description of the product's behaviour, not an independent audit or
           certification.
         </p>
@@ -68,7 +68,7 @@ function Privacy() {
           <div className="mt-6 overflow-hidden rounded-xl border border-hairline">
             <table className="w-full text-left text-sm">
               <caption className="sr-only">
-                CareerOS data fields and how each one is stored
+                CareerGem data fields and how each one is stored
               </caption>
               <thead className="bg-surface-raised">
                 <tr>
