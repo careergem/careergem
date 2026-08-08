@@ -1,0 +1,64 @@
+# CareerGem Agentic Build Mandate
+
+## Product Vision
+
+CareerGem turns job seeking into a math problem.
+
+Input: resume + target roles.
+
+Output: readiness assessment + 3-5 concrete actions.
+
+Tone: advisor who runs numbers, not cheerleader.
+
+## Immediate Build: Phase 1-3 (Onboarding, Assessment, Guidance)
+
+See the system prompt titled "CareerGem Lovable Pro Prompt" for full specs.
+
+## Non-Negotiable Constraints
+
+- All assessment model calls happen server-side only. In this codebase that means
+  TanStack Start server functions (`createServerFn`) with `*.server.ts` helpers —
+  never client-side, never a raw client key. (Original mandate said "Supabase Edge
+  Functions"; this stack uses server functions instead.)
+
+- Zero resume text or parsed data exposed to client unencrypted.
+
+- Preserve existing Supabase auth, RLS, and entitlement checks.
+
+- Payment status is single source of truth for free/Pro gates.
+
+- No "AI" language in UI ("Assessment" not "AI Assessment").
+
+- Shareable snippet export is mandatory (content flywheel input).
+
+## Code Quality Gates
+
+- Every new page has a test.
+
+- No env secrets in client code.
+
+- TypeScript strict mode.
+
+- All forms have validation + error states.
+
+- RLS policies audited before deploy.
+
+## Deployment Contract
+
+- Before deploy: run tests, lint, type check.
+
+- After deploy: spot-check the /onboarding flow, trigger a test assessment.
+
+- Flag anything requiring manual verification (API costs, content accuracy).
+
+## Do Not Build Without Explicit Instruction
+
+- Messaging/networking.
+
+- Job board scraping.
+
+- Certification tracking.
+
+- Interview prep (video/practice).
+
+Build only what's in the CareerGem prompt. Ask for clarification if ambiguous.
