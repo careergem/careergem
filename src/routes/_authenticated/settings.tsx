@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
@@ -120,10 +120,27 @@ function Settings() {
             <dd>{profile?.plan === "active" ? "Subscribed" : "Trial"}</dd>
           </div>
           <div className="flex justify-between gap-4">
-            <dt className="text-muted-foreground">Target role</dt>
-            <dd>{profile?.target_role ?? "—"}</dd>
+            <dt className="text-muted-foreground">Target roles</dt>
+            <dd className="text-right">
+              {profile?.target_roles?.length
+                ? profile.target_roles.join(", ")
+                : (profile?.target_role ?? "—")}
+            </dd>
+          </div>
+          <div className="flex justify-between gap-4">
+            <dt className="text-muted-foreground">Experience</dt>
+            <dd>{profile?.experience_level ?? "—"}</dd>
+          </div>
+          <div className="flex justify-between gap-4">
+            <dt className="text-muted-foreground">Known gaps</dt>
+            <dd className="text-right">
+              {profile?.known_gaps?.length ? profile.known_gaps.join(", ") : "—"}
+            </dd>
           </div>
         </dl>
+        <Button asChild variant="outline" size="sm" className="mt-5">
+          <Link to="/onboarding">Edit profile</Link>
+        </Button>
         <p className="mt-5 text-xs text-muted-foreground">
           Everything else — resumes, reports, roadmap text — is stored encrypted and is
           unreadable without your password.

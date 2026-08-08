@@ -10,6 +10,7 @@ import { useSignOut } from "@/hooks/useSignOut";
 const links = [
   { to: "/dashboard", label: "Dashboard" },
   { to: "/assessment/new", label: "New assessment" },
+  { to: "/assessments", label: "History" },
   { to: "/settings", label: "Settings" },
 ] as const;
 

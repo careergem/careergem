@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 
 import { AppShell } from "@/components/AppShell";
+import { UsageBanner } from "@/components/UsageBanner";
 import { ScoreGauge } from "@/components/ScoreGauge";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
@@ -61,14 +62,20 @@ function Dashboard() {
             {profile?.display_name ? `Hey ${profile.display_name}` : "Your dashboard"}
           </h1>
           <p className="mt-2 text-muted-foreground">
-            {profile?.target_role
-              ? `Tracking toward: ${profile.target_role}`
-              : "Set a target role in settings to sharpen your scores."}
+            {profile?.target_roles?.length
+              ? `Tracking toward: ${profile.target_roles.join(", ")}`
+              : profile?.target_role
+                ? `Tracking toward: ${profile.target_role}`
+                : "Add a target role in onboarding to sharpen your scores."}
           </p>
         </div>
         <Button asChild>
           <Link to="/assessment/new">Run new assessment</Link>
         </Button>
+      </div>
+
+      <div className="mt-8">
+        <UsageBanner />
       </div>
 
       {isPending ? (
@@ -107,9 +114,14 @@ function Dashboard() {
           </section>
 
           <section className="rounded-xl border border-hairline bg-surface p-7">
-            <h2 className="font-display text-lg font-semibold">History</h2>
+            <div className="flex items-baseline justify-between gap-4">
+              <h2 className="font-display text-lg font-semibold">Recent</h2>
+              <Link to="/assessments" className="text-sm underline underline-offset-4">
+                All assessments
+              </Link>
+            </div>
             <ul className="mt-5 divide-y divide-hairline">
-              {rows.map((row) => (
+              {rows.slice(0, 5).map((row) => (
                 <li key={row.id} className="flex items-center justify-between gap-4 py-3.5">
                   <div>
                     <p className="font-mono text-sm">
