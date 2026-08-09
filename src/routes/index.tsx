@@ -166,6 +166,17 @@ function Landing() {
               Get my career score
             </Link>
           </Button>
+          <p className="relative mt-5 text-sm text-muted-foreground">
+            Cautious about uploading a resume?{" "}
+            <Link to="/faq" className="text-signal underline-offset-4 hover:underline">
+              Read the FAQ
+            </Link>{" "}
+            or{" "}
+            <Link to="/security" className="text-signal underline-offset-4 hover:underline">
+              check the security model
+            </Link>
+            .
+          </p>
         </section>
       </main>
 
