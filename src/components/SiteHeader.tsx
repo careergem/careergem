@@ -24,8 +24,11 @@ export function SiteHeader() {
           <Link to="/pricing" className="transition-colors hover:text-foreground">
             Pricing
           </Link>
-          <Link to="/privacy" className="transition-colors hover:text-foreground">
-            Privacy
+          <Link to="/security" className="transition-colors hover:text-foreground">
+            Security
+          </Link>
+          <Link to="/faq" className="transition-colors hover:text-foreground">
+            FAQ
           </Link>
         </nav>
         <div className="flex items-center gap-2">
@@ -62,8 +65,11 @@ export function SiteHeader() {
         <Link to="/pricing" className="whitespace-nowrap">
           Pricing
         </Link>
-        <Link to="/privacy" className="whitespace-nowrap">
-          Privacy
+        <Link to="/security" className="whitespace-nowrap">
+          Security
+        </Link>
+        <Link to="/faq" className="whitespace-nowrap">
+          FAQ
         </Link>
       </nav>
     </header>
@@ -82,8 +88,14 @@ export function SiteFooter() {
           <Link to="/pricing" className="transition-colors hover:text-foreground">
             Pricing
           </Link>
+          <Link to="/faq" className="transition-colors hover:text-foreground">
+            FAQ
+          </Link>
+          <Link to="/security" className="transition-colors hover:text-foreground">
+            Security
+          </Link>
           <Link to="/privacy" className="transition-colors hover:text-foreground">
-            Privacy &amp; security
+            Privacy
           </Link>
         </nav>
       </div>
