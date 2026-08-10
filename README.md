@@ -1,24 +1,45 @@
-# Secure Pocket Pal
+# CareerGem
 
-create a plan to build an app for the IOS app store; the app should be useful to users, accessible, and 100% data secure. this app should be monetizable.
+CareerGem is a career development platform for **STEM students, graduates, and professionals** looking to strengthen their resumes, portfolios, and overall job readiness.
 
-This project was built with [Lovable](https://lovable.dev).
+The platform helps candidates better communicate their technical skills, experience, and projects so they can improve their chances of securing roles aligned with their abilities.
 
-## Build with Lovable
+## Core Features
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/2a5eb897-d099-4b54-82da-324f08b75a8f).
+* **Resume Analysis** — Identify weaknesses, improve impact statements, and strengthen role alignment.
+* **Portfolio Review** — Evaluate projects based on technical depth, presentation, relevance, and demonstrated skills.
+* **Job Matching** — Compare a candidate's experience and skills against job requirements.
+* **Skill Gap Analysis** — Highlight areas that may be limiting readiness for a target role.
+* **Career Assessments** — Provide structured feedback and actionable recommendations for improvement.
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+## Who It's For
 
-## Development
+CareerGem is designed for candidates across STEM fields, including:
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+* Software & Computer Engineering
+* Data Science & Analytics
+* AI & Machine Learning
+* Cybersecurity
+* Electrical & Mechanical Engineering
+* Mathematics & Statistics
+* Scientific and technical disciplines
 
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
+## Goal
+
+CareerGem aims to make career improvement more structured.
+
+Instead of relying on generic advice, candidates can evaluate their current profile, identify gaps, make targeted improvements, and better understand what they need to become competitive for their desired roles.
+
+## Project Status
+
+CareerGem is currently under active development.
+
+Planned development includes continued improvements to assessments, portfolio analysis, job alignment, security, accessibility, and the overall candidate experience.
+
+## Contributing
+
+CareerGem is currently a developing project. Contribution guidelines and additional developer documentation will be added as the project evolves.
+
+## License
+
+License information will be added prior to public distribution.
