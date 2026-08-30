@@ -17,7 +17,10 @@ export function SiteHeader() {
       </a>
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5">
         <Logo />
-        <nav aria-label="Main" className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
+        <nav
+          aria-label="Main"
+          className="hidden items-center gap-7 text-sm text-muted-foreground md:flex"
+        >
           <Link to="/how-it-works" className="transition-colors hover:text-foreground">
             How it works
           </Link>
@@ -96,6 +99,12 @@ export function SiteFooter() {
           </Link>
           <Link to="/privacy" className="transition-colors hover:text-foreground">
             Privacy
+          </Link>
+          <Link to="/terms" className="transition-colors hover:text-foreground">
+            Terms
+          </Link>
+          <Link to="/refunds" className="transition-colors hover:text-foreground">
+            Refunds
           </Link>
         </nav>
       </div>

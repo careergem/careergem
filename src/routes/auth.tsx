@@ -49,6 +49,7 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [acknowledged, setAcknowledged] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -152,8 +153,8 @@ function AuthPage() {
               <div className="rounded-md border border-warning/40 bg-warning/10 p-4">
                 <p className="text-sm">
                   <strong className="font-semibold">Read this before continuing.</strong> Your
-                  password is also your encryption key. We never see it, so if you lose it we
-                  cannot recover your assessments — nobody can. Store it in a password manager.
+                  password is also your encryption key. We never see it, so if you lose it we cannot
+                  recover your assessments — nobody can. Store it in a password manager.
                 </p>
                 <label className="mt-3 flex items-start gap-2.5 text-sm">
                   <input
@@ -164,6 +165,26 @@ function AuthPage() {
                     required
                   />
                   <span>I understand my data is unrecoverable if I forget my password.</span>
+                </label>
+                <label className="mt-3 flex items-start gap-2.5 text-sm">
+                  <input
+                    type="checkbox"
+                    checked={acceptedTerms}
+                    onChange={(event) => setAcceptedTerms(event.target.checked)}
+                    className="mt-0.5 size-4 rounded border-input accent-[oklch(0.72_0.15_215)]"
+                    required
+                  />
+                  <span>
+                    I am at least 18 and agree to the{" "}
+                    <Link to="/terms" className="underline underline-offset-4">
+                      Terms of Use
+                    </Link>{" "}
+                    and{" "}
+                    <Link to="/privacy" className="underline underline-offset-4">
+                      Privacy Policy
+                    </Link>
+                    .
+                  </span>
                 </label>
               </div>
             ) : null}
@@ -182,7 +203,7 @@ function AuthPage() {
             <Button
               type="submit"
               className="w-full"
-              disabled={busy || (isSignup && !acknowledged)}
+              disabled={busy || (isSignup && (!acknowledged || !acceptedTerms))}
             >
               {busy ? "Working…" : isSignup ? "Create account" : "Sign in"}
             </Button>

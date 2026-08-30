@@ -48,17 +48,19 @@ pushed history.
 
 ## 4. Set up Stripe before opening subscriptions
 
-1. Create the company/sole-proprietor Stripe account in the legal name you will use for sales.
-2. Complete identity and banking verification.
-3. Create the monthly and annual CareerGem subscription products/prices matching the public pricing page.
-4. Configure the customer portal and a webhook endpoint for subscription changes.
-5. Run one test checkout and cancellation in Stripe test mode.
+1. For an Ontario launch, register the CareerGem business name if you will operate as a sole proprietor under that name; or provide the registered corporation's legal name. Get a qualified Canadian lawyer/CPA review before paid public launch.
+2. Create the company/sole-proprietor Stripe account in the legal name you will use for sales.
+3. Complete identity and banking verification.
+4. Create the monthly and annual CareerGem subscription products/prices matching the public pricing page.
+5. Configure the customer portal and a webhook endpoint for subscription changes.
+6. Run one test checkout and cancellation in Stripe test mode.
 
 Your deliverable: tell Codex when Stripe is verified and whether test-mode checkout is ready. Keep all secret keys in Stripe/Lovable secret settings—not in Git or chat.
 
 ## 5. Provide launch decisions when the beta is ready
 
 - Final public product name and one-sentence promise.
+- Operating legal name (sole proprietor or corporation) for the legal pages and Stripe.
 - Domain name (only when you decide to acquire it).
 - Canadian-only launch or international availability.
 - Support email address.

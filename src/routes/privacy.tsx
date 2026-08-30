@@ -60,6 +60,22 @@ function Privacy() {
           It is a description of the product's behaviour, not an independent audit or certification.
         </p>
 
+        <aside className="mt-8 rounded-xl border border-warning/40 bg-warning/10 p-5 text-sm text-muted-foreground">
+          <strong className="font-semibold text-foreground">Development-policy draft.</strong> This
+          text is prepared for an Ontario, Canada-first launch. Before CareerGem opens paid
+          subscriptions to the public, it needs a qualified Canadian legal review plus the operating
+          legal name and a working privacy contact email.
+        </aside>
+
+        <section className="mt-12">
+          <h2 className="font-display text-2xl font-semibold">Who this policy covers</h2>
+          <p className="mt-4 leading-relaxed text-muted-foreground">
+            This policy describes how CareerGem processes personal information when you use the
+            website and service. CareerGem is intended for people aged 18 and over. Do not create an
+            account or submit personal information if you are under 18.
+          </p>
+        </section>
+
         <section className="mt-14">
           <h2 className="font-display text-2xl font-semibold">The mechanism</h2>
           <p className="mt-4 leading-relaxed text-muted-foreground">
@@ -117,6 +133,45 @@ function Privacy() {
         </section>
 
         <section className="mt-12">
+          <h2 className="font-display text-2xl font-semibold">Why we use this information</h2>
+          <p className="mt-4 leading-relaxed text-muted-foreground">
+            We use account details to authenticate you, provide support, protect the service, and
+            communicate essential account or billing information. We use the career material you
+            choose to submit only to generate the requested assessment and related roadmap. Optional
+            school, graduation timing, and interests are stored for your own reference and are not
+            included in the assessment request.
+          </p>
+          <p className="mt-4 leading-relaxed text-muted-foreground">
+            We do not sell career data or use it for advertising. We start without third-party
+            behavioural advertising analytics. If that changes, we will update this policy before
+            enabling it.
+          </p>
+        </section>
+
+        <section className="mt-12">
+          <h2 className="font-display text-2xl font-semibold">Service providers</h2>
+          <p className="mt-4 leading-relaxed text-muted-foreground">
+            CareerGem relies on service providers to host the application, authenticate accounts and
+            store encrypted records, process payments, and perform the requested AI assessment. They
+            receive only the information needed for their part of the service. Payment processing is
+            handled by Stripe; card numbers do not pass through CareerGem. Providers may process
+            information outside your province or Canada, subject to their own security and legal
+            obligations.
+          </p>
+        </section>
+
+        <section className="mt-12">
+          <h2 className="font-display text-2xl font-semibold">Retention and deletion</h2>
+          <p className="mt-4 leading-relaxed text-muted-foreground">
+            Your encrypted assessments and profile data remain in your account until you delete them
+            or delete the account. You can export your readable data before deletion from Settings.
+            We may keep limited billing and security records where needed to resolve a dispute,
+            prevent fraud, or meet a legal obligation. Stripe retains payment records under its own
+            policies.
+          </p>
+        </section>
+
+        <section className="mt-12">
           <h2 className="font-display text-2xl font-semibold">The trade-off, stated plainly</h2>
           <p className="mt-4 leading-relaxed text-muted-foreground">
             Real encryption has a real cost: if you forget your password, your encrypted history is
@@ -144,6 +199,17 @@ function Privacy() {
               </li>
             ))}
           </ul>
+        </section>
+
+        <section className="mt-12">
+          <h2 className="font-display text-2xl font-semibold">Questions, access, and concerns</h2>
+          <p className="mt-4 leading-relaxed text-muted-foreground">
+            Before public paid launch, this section will list CareerGem's legal operator, privacy
+            contact email, and a straightforward process for an access, correction, deletion, or
+            privacy concern. You may also have a right to complain to the Office of the Privacy
+            Commissioner of Canada or another applicable privacy regulator. This draft does not
+            limit those rights.
+          </p>
         </section>
 
         <div className="mt-16 rounded-xl border border-hairline bg-surface p-7">
