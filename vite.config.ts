@@ -14,6 +14,11 @@ export default defineConfig({
     server: { entry: "server" },
   },
   vite: {
-    plugins: [mcpPlugin()],
+    // The MCP plugin generates route files that are committed to the repository.
+    // Its current path containment check mixes slash styles on Windows, causing
+    // local builds to fail before the application is compiled. Lovable's hosted
+    // Linux build continues to run the generator; Windows uses the committed
+    // generated routes until that upstream issue is resolved.
+    plugins: process.platform === "win32" ? [] : [mcpPlugin()],
   },
 });
