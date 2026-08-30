@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">CareerGem</title>
+  <desc id="desc">A cyan four-point career gem on a deep indigo background.</desc>
+  <defs>
+    <linearGradient id="gem" x1="112" y1="96" x2="404" y2="420" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9FF5F2"/>
+      <stop offset="0.48" stop-color="#4FD8E0"/>
+      <stop offset="1" stop-color="#9C6BFF"/>
+    </linearGradient>
+    <radialGradient id="field" cx="0" cy="0" r="1" gradientTransform="translate(256 256) rotate(90) scale(256)">
+      <stop stop-color="#202A56"/>
+      <stop offset="1" stop-color="#0D1020"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#field)"/>
+  <circle cx="256" cy="256" r="164" fill="none" stroke="#4FD8E0" stroke-opacity=".22" stroke-width="12"/>
+  <path d="M256 92 302 210 420 256 302 302 256 420 210 302 92 256 210 210Z" fill="url(#gem)"/>
+  <path d="m256 150 25 81 81 25-81 25-25 81-25-81-81-25 81-25Z" fill="#0D1020" fill-opacity=".64"/>
+  <circle cx="256" cy="256" r="16" fill="#D8FFFF"/>
+</svg>

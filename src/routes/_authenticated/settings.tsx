@@ -85,7 +85,11 @@ function Settings() {
 
   async function handleDeleteAll() {
     if (!session) return;
-    if (!window.confirm("Permanently delete all assessments and roadmap items? This cannot be undone.")) {
+    if (
+      !window.confirm(
+        "Permanently delete all assessments and roadmap items? This cannot be undone.",
+      )
+    ) {
       return;
     }
     setStatus("Deleting…");
@@ -99,9 +103,7 @@ function Settings() {
     <div className="mx-auto max-w-2xl space-y-8">
       <div>
         <h1 className="font-display text-3xl font-semibold">Settings</h1>
-        <p className="mt-3 text-muted-foreground">
-          What we hold for you, and how to take it back.
-        </p>
+        <p className="mt-3 text-muted-foreground">What we hold for you, and how to take it back.</p>
       </div>
 
       <section className="rounded-xl border border-hairline bg-surface p-7">
@@ -142,12 +144,34 @@ function Settings() {
           <Link to="/onboarding">Edit profile</Link>
         </Button>
         <p className="mt-5 text-xs text-muted-foreground">
-          Everything else — resumes, reports, roadmap text — is stored encrypted and is
-          unreadable without your password.
+          Everything else — resumes, reports, roadmap text — is stored encrypted and is unreadable
+          without your password.
         </p>
       </section>
 
       <SubscriptionPanel billingFlag={billing} />
+
+      <section className="rounded-xl border border-hairline bg-surface p-7">
+        <h2 className="font-display text-lg font-semibold">Use CareerGem like an app</h2>
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+          Install CareerGem for a focused, full-screen workspace and faster access to your roadmap.
+          Your data stays in the same encrypted account.
+        </p>
+        <ul className="mt-5 space-y-2 text-sm text-muted-foreground">
+          <li>
+            <span className="font-medium text-foreground">iPhone or iPad:</span> open CareerGem in
+            Safari, tap Share, then choose Add to Home Screen.
+          </li>
+          <li>
+            <span className="font-medium text-foreground">Android:</span> open the browser menu and
+            choose Install app or Add to Home screen.
+          </li>
+          <li>
+            <span className="font-medium text-foreground">Desktop:</span> use the install icon in
+            Chrome or Edge's address bar, or choose Install CareerGem from the browser menu.
+          </li>
+        </ul>
+      </section>
 
       <section className="rounded-xl border border-hairline bg-surface p-7">
         <h2 className="font-display text-lg font-semibold">Your data</h2>
