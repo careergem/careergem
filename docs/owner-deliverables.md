@@ -76,3 +76,15 @@ Your deliverable: tell Codex when Stripe is verified and whether test-mode check
 4. Run Lovable's security/SEO review and connect Google Search Console after the domain is live.
 
 Lovable's publishing guide is [here](https://docs.lovable.dev/features/publish).
+
+## Final launch close-out: legal and business details
+
+Do not open paid subscriptions publicly until all of these are complete:
+
+- Register the Ontario business name **CareerGem** if operating as a sole proprietor, or confirm the corporation's legal name.
+- Replace the legal-policy draft placeholders with the operating legal name and a working support/privacy email.
+- Approve the final refund/cancellation policy and have a qualified Canadian lawyer review the Privacy Policy, Terms of Use, and Refund/Cancellation Policy.
+- Confirm the GST/HST approach with a CPA and register when required for the planned launch scope.
+- Complete Stripe live-account verification and a successful test-mode checkout, cancellation, and webhook test.
+
+The product can continue through private preview and closed beta while these items are pending; they are a hard gate for public paid launch.
