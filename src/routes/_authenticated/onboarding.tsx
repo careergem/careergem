@@ -1,14 +1,22 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
 import { RolePicker } from "@/components/RolePicker";
 import { useAssessmentUsage } from "@/components/UsageBanner";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { commonGaps, experienceLevels, FREE_ROLE_LIMIT } from "@/lib/assessment-schema";
+import { open, seal } from "@/lib/crypto";
+import {
+  emptyPersonalDetails,
+  hasPersonalDetails,
+  normalizePersonalDetails,
+  type PersonalDetails,
+} from "@/lib/personal-details";
 
 export const Route = createFileRoute("/_authenticated/onboarding")({
   head: () => ({
@@ -22,7 +30,8 @@ export const Route = createFileRoute("/_authenticated/onboarding")({
       { property: "og:title", content: "Set up your CareerGem profile" },
       {
         property: "og:description",
-        content: "Field, target roles, experience, and timeline — the context behind every assessment.",
+        content:
+          "Field, target roles, experience, and timeline — the context behind every assessment.",
       },
       { name: "robots", content: "noindex" },
     ],
@@ -51,8 +60,16 @@ const timelines = [
   "Exploring for later",
 ];
 
+const graduationTimings = [
+  "Graduating this year",
+  "Graduating next year",
+  "Graduating in 2+ years",
+  "Recently graduated",
+  "Already graduated",
+];
+
 function Onboarding() {
-  const { profile, refreshProfile } = useAuth();
+  const { profile, refreshProfile, vaultKey } = useAuth();
   const navigate = useNavigate();
   const { data: usage } = useAssessmentUsage();
   const roleLimit = usage?.entitlement.roleLimit ?? FREE_ROLE_LIMIT;
@@ -68,12 +85,48 @@ function Onboarding() {
   const [experience, setExperience] = useState(profile?.experience_level ?? "");
   const [gaps, setGaps] = useState<string[]>(profile?.known_gaps ?? []);
   const [timeline, setTimeline] = useState(profile?.timeline ?? timelines[0]!);
+  const [personalDetails, setPersonalDetails] = useState<PersonalDetails>(emptyPersonalDetails);
+  const [detailsLoaded, setDetailsLoaded] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    let active = true;
+
+    async function loadPersonalDetails() {
+      if (!vaultKey || !profile) return;
+      if (!profile.personal_details_ciphertext || !profile.personal_details_iv) {
+        if (active) {
+          setPersonalDetails(emptyPersonalDetails);
+          setDetailsLoaded(true);
+        }
+        return;
+      }
+
+      try {
+        const opened = await open<PersonalDetails>(vaultKey, {
+          ciphertext: profile.personal_details_ciphertext,
+          iv: profile.personal_details_iv,
+        });
+        if (active) setPersonalDetails({ ...emptyPersonalDetails, ...opened });
+      } catch {
+        if (active) setError("Your optional personal details could not be decrypted.");
+      } finally {
+        if (active) setDetailsLoaded(true);
+      }
+    }
+
+    void loadPersonalDetails();
+    return () => {
+      active = false;
+    };
+  }, [profile, vaultKey]);
+
   function toggleGap(gap: string) {
     setGaps((current) =>
-      current.includes(gap) ? current.filter((item) => item !== gap) : [...current, gap].slice(0, 10),
+      current.includes(gap)
+        ? current.filter((item) => item !== gap)
+        : [...current, gap].slice(0, 10),
     );
   }
 
@@ -82,7 +135,15 @@ function Onboarding() {
     setBusy(true);
     setError(null);
     try {
-      const trimmed = roles.map((role) => role.trim()).filter(Boolean).slice(0, 5);
+      if (!vaultKey) throw new Error("Unlock your vault before saving your profile.");
+      const trimmed = roles
+        .map((role) => role.trim())
+        .filter(Boolean)
+        .slice(0, 5);
+      const normalizedDetails = normalizePersonalDetails(personalDetails);
+      const sealedDetails = hasPersonalDetails(normalizedDetails)
+        ? await seal(vaultKey, normalizedDetails)
+        : null;
       const { error: updateError } = await supabase
         .from("profiles")
         .update({
@@ -92,6 +153,8 @@ function Onboarding() {
           experience_level: experience || null,
           known_gaps: gaps,
           timeline,
+          personal_details_ciphertext: sealedDetails?.ciphertext ?? null,
+          personal_details_iv: sealedDetails?.iv ?? null,
           onboarding_complete: true,
         })
         .eq("id", profile!.id);
@@ -201,13 +264,73 @@ function Onboarding() {
           </select>
         </div>
 
+        <fieldset className="space-y-4 rounded-xl border border-hairline bg-surface p-5">
+          <legend className="px-1 font-display text-base font-semibold">
+            Private personal details
+          </legend>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            Optional context for you alone. These details are encrypted in your browser, never sent
+            to the assessment model, and can be removed at any time.
+          </p>
+          <div className="space-y-2">
+            <Label htmlFor="school">School or program (optional)</Label>
+            <input
+              id="school"
+              value={personalDetails.school}
+              onChange={(event) =>
+                setPersonalDetails((current) => ({ ...current, school: event.target.value }))
+              }
+              maxLength={160}
+              disabled={!detailsLoaded}
+              placeholder="e.g. Computer Engineering diploma"
+              className="h-10 w-full rounded-md border border-input bg-surface-raised px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-wait disabled:opacity-60"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="graduation">Graduation timing (optional)</Label>
+            <select
+              id="graduation"
+              value={personalDetails.graduationTiming}
+              onChange={(event) =>
+                setPersonalDetails((current) => ({
+                  ...current,
+                  graduationTiming: event.target.value,
+                }))
+              }
+              disabled={!detailsLoaded}
+              className="h-10 w-full rounded-md border border-input bg-surface-raised px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-wait disabled:opacity-60"
+            >
+              <option value="">Prefer not to say</option>
+              {graduationTimings.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="interests">Interests (optional)</Label>
+            <Textarea
+              id="interests"
+              rows={3}
+              value={personalDetails.interests}
+              onChange={(event) =>
+                setPersonalDetails((current) => ({ ...current, interests: event.target.value }))
+              }
+              maxLength={600}
+              disabled={!detailsLoaded}
+              placeholder="Projects, technical interests, communities, or anything you want to keep with your profile."
+            />
+          </div>
+        </fieldset>
+
         {error ? (
           <p role="alert" className="text-sm text-destructive">
             {error}
           </p>
         ) : null}
 
-        <Button type="submit" size="lg" disabled={busy}>
+        <Button type="submit" size="lg" disabled={busy || !detailsLoaded}>
           {busy ? "Saving…" : "Continue to assessment"}
         </Button>
       </form>

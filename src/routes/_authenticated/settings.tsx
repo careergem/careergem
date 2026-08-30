@@ -9,6 +9,7 @@ import { useSignOut } from "@/hooks/useSignOut";
 import { supabase } from "@/integrations/supabase/client";
 import { open } from "@/lib/crypto";
 import type { CareerReport } from "@/lib/assessment-schema";
+import type { PersonalDetails } from "@/lib/personal-details";
 
 import { z } from "zod";
 
@@ -70,8 +71,29 @@ function Settings() {
       }),
     );
 
+    let personalDetails: PersonalDetails | null = null;
+    if (vaultKey && profile?.personal_details_ciphertext && profile.personal_details_iv) {
+      try {
+        personalDetails = await open<PersonalDetails>(vaultKey, {
+          ciphertext: profile.personal_details_ciphertext,
+          iv: profile.personal_details_iv,
+        });
+      } catch {
+        // Keep the export usable if an older encrypted detail bundle cannot be opened.
+      }
+    }
+
     const blob = new Blob(
-      [JSON.stringify({ profile: { display_name: profile?.display_name }, reports }, null, 2)],
+      [
+        JSON.stringify(
+          {
+            profile: { display_name: profile?.display_name, personal_details: personalDetails },
+            reports,
+          },
+          null,
+          2,
+        ),
+      ],
       { type: "application/json" },
     );
     const url = URL.createObjectURL(blob);
@@ -139,13 +161,18 @@ function Settings() {
               {profile?.known_gaps?.length ? profile.known_gaps.join(", ") : "—"}
             </dd>
           </div>
+          <div className="flex justify-between gap-4">
+            <dt className="text-muted-foreground">Private details</dt>
+            <dd>{profile?.personal_details_ciphertext ? "Encrypted and saved" : "Not added"}</dd>
+          </div>
         </dl>
         <Button asChild variant="outline" size="sm" className="mt-5">
           <Link to="/onboarding">Edit profile</Link>
         </Button>
         <p className="mt-5 text-xs text-muted-foreground">
-          Everything else — resumes, reports, roadmap text — is stored encrypted and is unreadable
-          without your password.
+          Everything else — resumes, reports, roadmap text, and optional personal details — is
+          stored encrypted and is unreadable without your password. Personal details are never used
+          to assess you.
         </p>
       </section>
 

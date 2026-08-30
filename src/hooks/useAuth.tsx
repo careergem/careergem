@@ -3,12 +3,7 @@ import type { ReactNode } from "react";
 import type { Session } from "@supabase/supabase-js";
 
 import { supabase } from "@/integrations/supabase/client";
-import {
-  checkVerifier,
-  createVerifier,
-  deriveKey,
-  generateSalt,
-} from "@/lib/crypto";
+import { checkVerifier, createVerifier, deriveKey, generateSalt } from "@/lib/crypto";
 
 export type Profile = {
   id: string;
@@ -25,6 +20,8 @@ export type Profile = {
   known_gaps: string[];
   field: string | null;
   timeline: string | null;
+  personal_details_ciphertext: string | null;
+  personal_details_iv: string | null;
   subscription_status: string | null;
   current_period_end: string | null;
   cancel_at_period_end: boolean;
@@ -51,7 +48,7 @@ async function loadProfile(userId: string): Promise<Profile | null> {
   const { data, error } = await supabase
     .from("profiles")
     .select(
-      "id, display_name, plan, trial_ends_at, kdf_salt, verifier_ciphertext, verifier_iv, onboarding_complete, target_role, target_roles, experience_level, known_gaps, field, timeline, subscription_status, current_period_end, cancel_at_period_end, stripe_customer_id",
+      "id, display_name, plan, trial_ends_at, kdf_salt, verifier_ciphertext, verifier_iv, onboarding_complete, target_role, target_roles, experience_level, known_gaps, field, timeline, personal_details_ciphertext, personal_details_iv, subscription_status, current_period_end, cancel_at_period_end, stripe_customer_id",
     )
     .eq("id", userId)
     .maybeSingle();
@@ -108,51 +105,48 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   /** Derives the vault key from a passphrase, creating the salt on first use. */
-  const establishVault = useCallback(
-    async (userId: string, passphrase: string) => {
-      let current = await loadProfile(userId);
+  const establishVault = useCallback(async (userId: string, passphrase: string) => {
+    let current = await loadProfile(userId);
 
-      // The signup trigger may not have committed yet on very fast signups.
-      for (let attempt = 0; attempt < 5 && !current; attempt += 1) {
-        await new Promise((resolve) => setTimeout(resolve, 350));
-        current = await loadProfile(userId);
-      }
+    // The signup trigger may not have committed yet on very fast signups.
+    for (let attempt = 0; attempt < 5 && !current; attempt += 1) {
+      await new Promise((resolve) => setTimeout(resolve, 350));
+      current = await loadProfile(userId);
+    }
 
-      if (current?.kdf_salt && current.verifier_ciphertext && current.verifier_iv) {
-        const key = await deriveKey(passphrase, current.kdf_salt);
-        const ok = await checkVerifier(key, {
-          ciphertext: current.verifier_ciphertext,
-          iv: current.verifier_iv,
-        });
-        if (!ok) {
-          setVaultMismatch(true);
-          setProfile(current);
-          return;
-        }
-        setVaultKey(key);
-        setVaultMismatch(false);
+    if (current?.kdf_salt && current.verifier_ciphertext && current.verifier_iv) {
+      const key = await deriveKey(passphrase, current.kdf_salt);
+      const ok = await checkVerifier(key, {
+        ciphertext: current.verifier_ciphertext,
+        iv: current.verifier_iv,
+      });
+      if (!ok) {
+        setVaultMismatch(true);
         setProfile(current);
         return;
       }
-
-      const salt = generateSalt();
-      const key = await deriveKey(passphrase, salt);
-      const verifier = await createVerifier(key);
-      const { error } = await supabase
-        .from("profiles")
-        .update({
-          kdf_salt: salt,
-          verifier_ciphertext: verifier.ciphertext,
-          verifier_iv: verifier.iv,
-        })
-        .eq("id", userId);
-      if (error) throw error;
       setVaultKey(key);
       setVaultMismatch(false);
-      setProfile(await loadProfile(userId));
-    },
-    [],
-  );
+      setProfile(current);
+      return;
+    }
+
+    const salt = generateSalt();
+    const key = await deriveKey(passphrase, salt);
+    const verifier = await createVerifier(key);
+    const { error } = await supabase
+      .from("profiles")
+      .update({
+        kdf_salt: salt,
+        verifier_ciphertext: verifier.ciphertext,
+        verifier_iv: verifier.iv,
+      })
+      .eq("id", userId);
+    if (error) throw error;
+    setVaultKey(key);
+    setVaultMismatch(false);
+    setProfile(await loadProfile(userId));
+  }, []);
 
   const signUp = useCallback(
     async (email: string, password: string, displayName: string) => {
@@ -212,7 +206,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       unlock,
       refreshProfile,
     }),
-    [session, profile, loading, vaultKey, vaultMismatch, signUp, signIn, signOut, unlock, refreshProfile],
+    [
+      session,
+      profile,
+      loading,
+      vaultKey,
+      vaultMismatch,
+      signUp,
+      signIn,
+      signOut,
+      unlock,
+      refreshProfile,
+    ],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

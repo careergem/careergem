@@ -24,13 +24,26 @@ export const Route = createFileRoute("/privacy")({
 });
 
 const rows: Array<[string, string]> = [
-  ["Email address", "Stored in plaintext — it is how you sign in and how we reach you about your account."],
+  [
+    "Email address",
+    "Stored in plaintext — it is how you sign in and how we reach you about your account.",
+  ],
   ["Display name", "Stored in plaintext so the app can greet you."],
+  [
+    "Optional school, graduation timing, and interests",
+    "Encrypted in your browser. Never used in an assessment.",
+  ],
   ["Resume text", "Encrypted in your browser before it is sent. Stored only as ciphertext."],
   ["Target role / job description", "Encrypted in your browser. Stored only as ciphertext."],
   ["Assessment reports", "Encrypted in your browser. Stored only as ciphertext."],
-  ["Career score", "Stored as a plain number so the app can chart your trend. It carries no personal detail on its own."],
-  ["Roadmap completion state", "Stored as a plain true/false per item, with the item text encrypted."],
+  [
+    "Career score",
+    "Stored as a plain number so the app can chart your trend. It carries no personal detail on its own.",
+  ],
+  [
+    "Roadmap completion state",
+    "Stored as a plain true/false per item, with the item text encrypted.",
+  ],
 ];
 
 function Privacy() {
@@ -43,23 +56,22 @@ function Privacy() {
           We built CareerGem so that we cannot read your resume
         </h1>
         <p className="mt-5 text-lg text-muted-foreground">
-          This page is maintained by the CareerGem team to describe how the app handles your
-          data. It is a description of the product's behaviour, not an independent audit or
-          certification.
+          This page is maintained by the CareerGem team to describe how the app handles your data.
+          It is a description of the product's behaviour, not an independent audit or certification.
         </p>
 
         <section className="mt-14">
           <h2 className="font-display text-2xl font-semibold">The mechanism</h2>
           <p className="mt-4 leading-relaxed text-muted-foreground">
-            When you set your password, your browser derives an encryption key from it using
-            PBKDF2 with a per-account random salt. That key stays in memory in your browser
-            tab. It is never sent to our servers, never written to disk, and never included in
-            a network request. Every sensitive field is encrypted with AES-GCM using that key
-            before it leaves your device, so what our database stores is ciphertext.
+            When you set your password, your browser derives an encryption key from it using PBKDF2
+            with a per-account random salt. That key stays in memory in your browser tab. It is
+            never sent to our servers, never written to disk, and never included in a network
+            request. Every sensitive field is encrypted with AES-GCM using that key before it leaves
+            your device, so what our database stores is ciphertext.
           </p>
           <p className="mt-4 leading-relaxed text-muted-foreground">
-            Because the key lives only in memory, you will be asked for your password again
-            after a reload or in a new tab. That is the mechanism working, not a bug.
+            Because the key lives only in memory, you will be asked for your password again after a
+            reload or in a new tab. That is the mechanism working, not a bug.
           </p>
         </section>
 
@@ -72,14 +84,20 @@ function Privacy() {
               </caption>
               <thead className="bg-surface-raised">
                 <tr>
-                  <th scope="col" className="px-4 py-3 font-display font-semibold">Data</th>
-                  <th scope="col" className="px-4 py-3 font-display font-semibold">How it is stored</th>
+                  <th scope="col" className="px-4 py-3 font-display font-semibold">
+                    Data
+                  </th>
+                  <th scope="col" className="px-4 py-3 font-display font-semibold">
+                    How it is stored
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map(([field, treatment]) => (
                   <tr key={field} className="border-t border-hairline bg-surface align-top">
-                    <th scope="row" className="px-4 py-3 font-medium text-foreground">{field}</th>
+                    <th scope="row" className="px-4 py-3 font-medium text-foreground">
+                      {field}
+                    </th>
                     <td className="px-4 py-3 text-muted-foreground">{treatment}</td>
                   </tr>
                 ))}
@@ -91,20 +109,20 @@ function Privacy() {
         <section className="mt-12">
           <h2 className="font-display text-2xl font-semibold">The AI analysis</h2>
           <p className="mt-4 leading-relaxed text-muted-foreground">
-            Running an assessment is the one moment your resume text exists in readable form
-            outside your browser. It is decrypted in your tab, sent over TLS to our server
-            function, passed to the AI model, and discarded when the request ends. It is never
-            written to a table, a file, or a log, and it is not used to train any model.
+            Running an assessment is the one moment your resume text exists in readable form outside
+            your browser. It is decrypted in your tab, sent over TLS to our server function, passed
+            to the AI model, and discarded when the request ends. It is never written to a table, a
+            file, or a log, and it is not used to train any model.
           </p>
         </section>
 
         <section className="mt-12">
           <h2 className="font-display text-2xl font-semibold">The trade-off, stated plainly</h2>
           <p className="mt-4 leading-relaxed text-muted-foreground">
-            Real encryption has a real cost: if you forget your password, your encrypted
-            history is unrecoverable. Not by support, not by us, not by anyone. You can always
-            reset your password and start a new vault, but past assessments stay locked. This
-            is the direct consequence of us not holding your key.
+            Real encryption has a real cost: if you forget your password, your encrypted history is
+            unrecoverable. Not by support, not by us, not by anyone. You can always reset your
+            password and start a new vault, but past assessments stay locked. This is the direct
+            consequence of us not holding your key.
           </p>
         </section>
 
@@ -118,7 +136,10 @@ function Privacy() {
               "Access is enforced per-row in the database, so no account can read another's data.",
             ].map((item) => (
               <li key={item} className="flex gap-3 text-sm text-muted-foreground">
-                <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rounded-full bg-signal" />
+                <span
+                  aria-hidden="true"
+                  className="mt-2 size-1.5 shrink-0 rounded-full bg-signal"
+                />
                 {item}
               </li>
             ))}
@@ -128,8 +149,8 @@ function Privacy() {
         <div className="mt-16 rounded-xl border border-hairline bg-surface p-7">
           <h2 className="font-display text-xl font-semibold">Questions about your data?</h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Every claim on this page is something you can verify in the app itself — the
-            settings screen shows exactly what is stored for your account.
+            Every claim on this page is something you can verify in the app itself — the settings
+            screen shows exactly what is stored for your account.
           </p>
           <Button asChild variant="outline" className="mt-6">
             <Link to="/auth" search={{ mode: "signup" }}>

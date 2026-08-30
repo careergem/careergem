@@ -134,6 +134,8 @@ function ReportView() {
     block,
     items: (roadmap ?? []).filter((item) => item.block === block),
   }));
+  const primaryRole = data.roles[0];
+  const nextMove = primaryRole?.actions[0];
 
   return (
     <article className="space-y-10">
@@ -147,18 +149,38 @@ function ReportView() {
               {data.extracted.yearsExperience !== null
                 ? `${data.extracted.yearsExperience} yrs evidenced`
                 : null}
-              {data.extracted.yearsExperience !== null && data.extracted.senioritySignal ? " · " : null}
+              {data.extracted.yearsExperience !== null && data.extracted.senioritySignal
+                ? " · "
+                : null}
               {data.extracted.senioritySignal}
             </p>
           ) : null}
         </div>
       </header>
 
+      {nextMove && primaryRole ? (
+        <section
+          className="rounded-xl border border-signal/40 bg-surface-raised p-7"
+          aria-labelledby="next-move"
+        >
+          <p className="font-mono text-xs uppercase tracking-[0.18em] text-signal">Start here</p>
+          <h2 id="next-move" className="mt-3 font-display text-xl font-semibold">
+            Your most important next move for {primaryRole.title}
+          </h2>
+          <p className="mt-3 text-base font-medium">{nextMove.action}</p>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{nextMove.why}</p>
+        </section>
+      ) : null}
+
       <section>
         <h2 className="font-display text-2xl font-semibold">Target roles</h2>
         <div className="mt-6 space-y-6">
           {data.roles.map((role) => (
-            <RoleCard key={role.title} role={role} showResources={entitlement?.resources ?? false} />
+            <RoleCard
+              key={role.title}
+              role={role}
+              showResources={entitlement?.resources ?? false}
+            />
           ))}
         </div>
       </section>
@@ -178,7 +200,10 @@ function ReportView() {
           <ul className="mt-5 space-y-3">
             {data.strengths.map((item) => (
               <li key={item} className="flex gap-3 text-sm text-muted-foreground">
-                <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rounded-full bg-success" />
+                <span
+                  aria-hidden="true"
+                  className="mt-2 size-1.5 shrink-0 rounded-full bg-success"
+                />
                 {item}
               </li>
             ))}
