@@ -2,32 +2,49 @@
 
 Complete these in order. Share confirmation or screenshots of completion with Codex; never paste passwords, private keys, database connection strings, or Stripe secret keys into chat.
 
-## 1. Confirm database backup before migration
+## 1. Make a free-tier data safety export before migration
 
-**Why:** the next release contains an encrypted-profile schema migration.
+**Why:** the next release contains an encrypted-profile schema migration. The
+Supabase free plan does not provide dashboard backups, but this migration is
+additive (it only adds nullable private-detail columns). A private export gives
+us a practical rollback reference without upgrading the plan.
 
-1. Open the linked project in the Supabase Dashboard.
-2. Go to **Database → Backups**.
-3. Confirm a recent restore point/back-up is available, or create a logical backup if your plan/workflow requires it.
-4. Reply: `Supabase backup confirmed — apply migration`.
+1. In Supabase **Table Editor**, privately export the current rows for
+   `profiles`, `assessments`, `roadmap_items`, and `processed_stripe_events`
+   (if it exists) as CSV.
+2. Record each table's row count. Keep the files outside this repository and
+   do not upload them to Git, Lovable, or chat: profile data can contain
+   personal information even where assessment content is encrypted.
+3. In **Authentication → Users**, record the current user count. Export the
+   user list only if the Dashboard makes that appropriate for your account.
+4. Reply: `Free-tier export complete — apply migration`.
 
 After that confirmation, Codex can apply the committed migration in version-controlled order. Do not manually paste the migration into the SQL editor if this project is managed through migration files; use the migration workflow so remote history stays aligned with Git. See [Supabase migration guidance](https://supabase.com/docs/guides/deployment/database-migrations) and [backup guidance](https://supabase.com/docs/guides/platform/backups).
 
-## 2. Acquire the domain now
+For a later, repeatable full database export, Supabase's CLI supports a logical
+dump. We can set that up after launch work is stable; it needs your own Supabase
+authentication and database access, neither of which belongs in this repository.
 
-**Recommendation:** buy the final brand domain now, even before public launch. Prefer a short, easy-to-spell `.com` if available; avoid hyphens and alternate spellings.
+## 2. Keep the Lovable URL until launch readiness
 
-**Easiest path:** in Lovable, use **Project → Settings → Domains** or the **Publish** modal, choose **Buy a new domain**, then follow the purchase flow. This keeps domain connection simple. You need workspace owner/admin rights. If you buy from another registrar, Lovable will provide the DNS records to add later.
+No domain purchase is needed now. Continue using the existing `lovable.app` URL
+for preview, closed beta, and early validation. Buy and connect the final domain
+only when we have an approved public-release date, ideally one to two weeks
+before it.
 
-Your deliverable: reply with the domain you bought and whether it was purchased through Lovable or another registrar. Do not send account credentials. Lovable's current custom-domain guide is [here](https://docs.lovable.dev/features/custom-domain).
+When the time comes, use **Lovable → Project Settings → Domains** or its
+**Publish** flow. Lovable's current custom-domain guide is [here](https://docs.lovable.dev/features/custom-domain).
 
-## 3. Confirm the GitHub/Lovable production branch
+## 3. Follow the confirmed GitHub/Lovable branch policy
 
-1. In Lovable, open the GitHub connection for CareerGem.
-2. Identify the branch that Lovable uses for synchronization and publishing.
-3. Tell Codex whether `dev` is intended to be the pre-production branch and which branch is production.
+| Branch | Purpose | Rule |
+| --- | --- | --- |
+| `dev` | Development and Lovable preview | Codex changes land here in small tested commits. |
+| `main` | Production | Keep protected; merge from `dev` only after your review and explicit approval. |
 
-**Recommendation:** use `dev` for Codex changes and a protected `main` branch for production. Merge only tested `dev` commits into `main`; do not force-push, rebase, or rewrite published history.
+In Lovable, confirm that preview work is reading `dev` and that production is
+published only from `main`. Do not force-push, rebase, or rewrite either branch's
+pushed history.
 
 ## 4. Set up Stripe before opening subscriptions
 
@@ -39,10 +56,10 @@ Your deliverable: reply with the domain you bought and whether it was purchased 
 
 Your deliverable: tell Codex when Stripe is verified and whether test-mode checkout is ready. Keep all secret keys in Stripe/Lovable secret settings—not in Git or chat.
 
-## 5. Provide launch decisions
+## 5. Provide launch decisions when the beta is ready
 
 - Final public product name and one-sentence promise.
-- Domain name.
+- Domain name (only when you decide to acquire it).
 - Canadian-only launch or international availability.
 - Support email address.
 - Refund/cancellation policy approved for the pricing page.
@@ -52,7 +69,8 @@ Your deliverable: tell Codex when Stripe is verified and whether test-mode check
 
 1. Ask Codex for the current release checklist and known blockers.
 2. Verify the private Lovable preview on a phone and desktop browser.
-3. Publish to the temporary `lovable.app` URL or your custom domain.
+3. Merge the approved `dev` release into protected `main`, then publish the
+   production version to the temporary `lovable.app` URL or your custom domain.
 4. Run Lovable's security/SEO review and connect Google Search Console after the domain is live.
 
 Lovable's publishing guide is [here](https://docs.lovable.dev/features/publish).

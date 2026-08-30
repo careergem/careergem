@@ -5,8 +5,8 @@
 | Tool            | Your job                                                                                                           | What it is for                                                                    |
 | --------------- | ------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
 | Lovable         | Build visually, review previews, manage environment settings, publish the approved version, and attach the domain. | Product editor, preview, hosting, and deployment.                                 |
-| GitHub          | Keep the repository private, review commits, protect the production branch, and preserve history.                  | Source control and rollback history.                                              |
-| Supabase        | Review database health, Auth settings, backups, and approved migrations.                                           | Authentication, database, row-level access control, and encrypted-record storage. |
+| GitHub          | Review small commits on `dev`; protect `main` and approve the production merge.                                    | Source control, staged release control, and rollback history.                    |
+| Supabase        | Review database health, Auth settings, free-tier data exports, and approved migrations.                            | Authentication, database, row-level access control, and encrypted-record storage. |
 | Stripe          | Complete business verification, create products/prices, test checkout, and monitor subscriptions/refunds.          | Subscription billing.                                                             |
 | ChatGPT / Codex | Give product priorities and feedback; review concise progress notes and approve external changes.                  | Code implementation, testing, release documentation, and Git commits.             |
 
@@ -17,10 +17,13 @@ Codex can inspect the project, make focused changes, test builds, and push appro
 1. You choose the current business outcome: for example, "improve first assessment completion".
 2. Codex turns it into small, tested commits on `dev` and pushes them to GitHub.
 3. You review the preview in Lovable and give product feedback.
-4. Before release, apply any committed database migrations, run the release checklist, and publish the approved branch/version.
-5. Review weekly metrics and customer feedback; choose only one or two high-impact improvements for the next cycle.
+4. Before release, make a free-tier safety export, apply any committed database migrations, and run the release checklist.
+5. After your explicit approval, merge `dev` into protected `main` and publish the production version.
+6. Review weekly metrics and customer feedback; choose only one or two high-impact improvements for the next cycle.
 
-**Important:** confirm the branch that Lovable treats as its synchronized/published source before launch. This workspace currently uses `dev`; Lovable's GitHub documentation says sync follows the connected default branch unless you intentionally use its branch workflow.
+**Important:** confirm in Lovable that preview work reads `dev` and that
+production publishes only from `main`. This is a required configuration check;
+Lovable's GitHub connection can otherwise follow the connected default branch.
 
 ## What happens for a candidate
 
@@ -55,11 +58,11 @@ Review these weekly in a small spreadsheet. Add a dedicated analytics provider o
 
 ## Release sequence
 
-1. Confirm the production database backup and apply committed migrations.
+1. On the free tier, make a private CSV export of the affected tables and record row counts; then apply committed migrations.
 2. Verify environment secrets in Lovable/Supabase/Stripe; never put private keys in Git.
 3. Test sign-up, vault unlock, assessment, report, export, deletion, checkout, and cancellation on mobile and desktop.
-4. Publish a private preview first, then publish publicly after final review.
-5. Attach the custom domain and update authentication redirect URLs if any OAuth provider is enabled.
+4. Publish a private preview first, then merge the approved release to `main` and publish publicly after final review.
+5. Continue on the Lovable URL until a custom domain is needed; then attach it and update authentication redirect URLs if any OAuth provider is enabled.
 6. Run Lovable's security and SEO reviews against the live domain.
 
 ## Incident basics
