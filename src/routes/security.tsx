@@ -133,11 +133,33 @@ function SecurityPage() {
               by anyone — including us. That is the cost of a design where only you can read your
               own career data, and we would rather say it up front than bury it.
             </p>
+          </div>
+        </section>
+
+        <section className="border-b border-hairline bg-surface/40">
+          <div className="mx-auto max-w-3xl px-5 py-16">
+            <h2 className="font-display text-2xl font-semibold">Reporting a security issue</h2>
             <p className="mt-4 leading-relaxed text-muted-foreground">
-              Found something that looks wrong? Tell us before telling anyone else, and we will
-              work the fix with you. Reports about authentication, access control, or encryption
-              get looked at first.
+              Found something that looks wrong? Tell us before telling anyone else, and we will work
+              the fix with you. Reports about authentication, access control, or encryption get
+              looked at first. We aim to acknowledge every report within two business days.
             </p>
+            <div className="mt-8 rounded-xl border border-signal/40 bg-surface p-6">
+              <p className="font-mono text-xs uppercase tracking-[0.24em] text-signal">
+                Security contact
+              </p>
+              <a
+                href="mailto:cjgencompany@proton.me?subject=CareerGem%20security%20report"
+                className="mt-3 inline-block font-display text-lg font-semibold underline underline-offset-4 hover:text-signal"
+              >
+                cjgencompany@proton.me
+              </a>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Use this address for vulnerability reports, privacy questions, and data deletion
+                requests. Please do not include your resume, your password, or any decrypted report
+                content in the message — we cannot read those by design, and we do not want copies.
+              </p>
+            </div>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild>
                 <Link to="/auth" search={{ mode: "signup" }}>
@@ -150,6 +172,7 @@ function SecurityPage() {
             </div>
           </div>
         </section>
+
       </main>
       <SiteFooter />
     </div>
