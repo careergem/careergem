@@ -156,22 +156,55 @@ function FaqPage() {
           Questions worth asking before you upload a resume
         </h1>
         <p className="mt-5 text-lg text-muted-foreground">
-          Short answers, no hedging. If something here is unclear, that is a bug in our writing.
+          Short answers, no hedging. If something here is unclear, that is a bug in our writing —
+          tell us at{" "}
+          <a
+            href={`mailto:${CONTACT_EMAIL}`}
+            className="underline underline-offset-4 hover:text-signal"
+          >
+            {CONTACT_EMAIL}
+          </a>
+          .
         </p>
 
-        <dl className="mt-14 divide-y divide-hairline border-y border-hairline">
-          {faqs.map((item) => (
-            <div key={item.q} className="py-7">
-              <dt className="font-display text-lg font-semibold">{item.q}</dt>
-              <dd className="mt-3 leading-relaxed text-muted-foreground">{item.a}</dd>
-            </div>
+        <nav aria-label="FAQ sections" className="mt-10 flex flex-wrap gap-2">
+          {groups.map((group) => (
+            <a
+              key={group.heading}
+              href={`#${slugify(group.heading)}`}
+              className="rounded-full border border-hairline px-4 py-1.5 text-sm text-muted-foreground transition-colors hover:border-signal/60 hover:text-foreground"
+            >
+              {group.heading}
+            </a>
           ))}
-        </dl>
+        </nav>
+
+        {groups.map((group) => (
+          <section key={group.heading} className="mt-14 scroll-mt-24" id={slugify(group.heading)}>
+            <h2 className="font-display text-2xl font-semibold">{group.heading}</h2>
+            <dl className="mt-6 divide-y divide-hairline border-y border-hairline">
+              {group.items.map((item) => (
+                <div key={item.q} className="py-7">
+                  <dt className="font-display text-lg font-semibold">{item.q}</dt>
+                  <dd className="mt-3 leading-relaxed text-muted-foreground">{item.a}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        ))}
 
         <div className="mt-14 rounded-xl border border-hairline bg-surface p-7">
-          <h2 className="font-display text-xl font-semibold">Still deciding?</h2>
+          <h2 className="font-display text-xl font-semibold">Still have a question?</h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Read the security model first — it is the part most people want to check.
+            Email{" "}
+            <a
+              href={`mailto:${CONTACT_EMAIL}`}
+              className="underline underline-offset-4 hover:text-signal"
+            >
+              {CONTACT_EMAIL}
+            </a>{" "}
+            for anything about billing, privacy, or security. Or read the security model — it is the
+            part most people want to check first.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Button asChild>
@@ -182,8 +215,12 @@ function FaqPage() {
             <Button asChild variant="outline">
               <Link to="/security">See the security model</Link>
             </Button>
+            <Button asChild variant="outline">
+              <Link to="/refunds">Refund policy</Link>
+            </Button>
           </div>
         </div>
+
       </main>
       <SiteFooter />
     </div>
