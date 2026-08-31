@@ -117,6 +117,9 @@ const groups: FaqGroup[] = [
 
 const faqs: Faq[] = groups.flatMap((group) => group.items);
 
+const slugify = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
+
 
 export const Route = createFileRoute("/faq")({
   head: () => ({
