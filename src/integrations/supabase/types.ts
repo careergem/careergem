@@ -38,6 +38,33 @@ export type Database = {
         };
         Relationships: [];
       };
+      beta_feedback: {
+        Row: {
+          created_at: string;
+          id: string;
+          kind: "useful" | "issue" | "idea" | "other";
+          message: string;
+          page: "assessment_report" | "settings" | null;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          kind: "useful" | "issue" | "idea" | "other";
+          message: string;
+          page?: "assessment_report" | "settings" | null;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          kind?: "useful" | "issue" | "idea" | "other";
+          message?: string;
+          page?: "assessment_report" | "settings" | null;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       processed_stripe_events: {
         Row: {
           event_id: string;

@@ -5,6 +5,7 @@ import { Logo } from "@/components/Logo";
 import { VaultLock } from "@/components/VaultLock";
 import { Button } from "@/components/ui/button";
 import { hasAccess, trialDaysLeft, useAuth } from "@/hooks/useAuth";
+import { PUBLIC_BETA } from "@/lib/launch";
 import { useSignOut } from "@/hooks/useSignOut";
 
 const links = [
@@ -67,7 +68,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
           <div className="flex items-center gap-3">
             <span className="hidden font-mono text-xs text-muted-foreground sm:inline">
-              {paid ? "Subscribed" : `Trial · ${daysLeft}d left`}
+              {paid ? "Subscribed" : PUBLIC_BETA ? "Public beta" : `Trial · ${daysLeft}d left`}
             </span>
             <Button variant="ghost" size="sm" onClick={() => void signOut()}>
               Sign out
@@ -91,7 +92,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </nav>
       </header>
 
-      {!hasAccess(profile) ? (
+      {!PUBLIC_BETA && !hasAccess(profile) ? (
         <div className="border-b border-warning/30 bg-warning/10">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-3 text-sm">
             <p>Your free trial has ended. Subscribe to run new assessments.</p>

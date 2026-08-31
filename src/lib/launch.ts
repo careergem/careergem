@@ -3,5 +3,6 @@
  * until Stripe verification, test checkout, and the paid-launch review pass.
  */
 export const BILLING_ENABLED = false;
+export const PUBLIC_BETA = true;
 
 export const BETA_ASSESSMENT_COPY = "1 private assessment every 30 days";

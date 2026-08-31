@@ -11,7 +11,7 @@ us a practical rollback reference without upgrading the plan.
 
 1. In Supabase **Table Editor**, privately export the current rows for
    `profiles`, `assessments`, `roadmap_items`, and `processed_stripe_events`
-   (if it exists) as CSV.
+   and `beta_feedback` (if either exists) as CSV.
 2. Record each table's row count. Keep the files outside this repository and
    do not upload them to Git, Lovable, or chat: profile data can contain
    personal information even where assessment content is encrypted.
@@ -37,10 +37,10 @@ When the time comes, use **Lovable → Project Settings → Domains** or its
 
 ## 3. Follow the confirmed GitHub/Lovable branch policy
 
-| Branch | Purpose | Rule |
-| --- | --- | --- |
-| `dev` | Development and Lovable preview | Codex changes land here in small tested commits. |
-| `main` | Production | Keep protected; merge from `dev` only after your review and explicit approval. |
+| Branch | Purpose                         | Rule                                                                           |
+| ------ | ------------------------------- | ------------------------------------------------------------------------------ |
+| `dev`  | Development and Lovable preview | Codex changes land here in small tested commits.                               |
+| `main` | Production                      | Keep protected; merge from `dev` only after your review and explicit approval. |
 
 In Lovable, confirm that preview work is reading `dev` and that production is
 published only from `main`. Do not force-push, rebase, or rewrite either branch's

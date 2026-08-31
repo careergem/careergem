@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
+import { BetaFeedback } from "@/components/BetaFeedback";
 import { SubscriptionPanel } from "@/components/SubscriptionPanel";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
@@ -141,7 +142,7 @@ function Settings() {
           </div>
           <div className="flex justify-between gap-4">
             <dt className="text-muted-foreground">Plan</dt>
-            <dd>{profile?.plan === "active" ? "Subscribed" : "Trial"}</dd>
+            <dd>{profile?.plan === "active" ? "Subscribed" : "Public beta"}</dd>
           </div>
           <div className="flex justify-between gap-4">
             <dt className="text-muted-foreground">Target roles</dt>
@@ -177,6 +178,8 @@ function Settings() {
       </section>
 
       <SubscriptionPanel billingFlag={billing} />
+
+      <BetaFeedback page="settings" />
 
       <section className="rounded-xl border border-hairline bg-surface p-7">
         <h2 className="font-display text-lg font-semibold">Use CareerGem like an app</h2>

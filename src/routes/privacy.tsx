@@ -142,6 +142,11 @@ function Privacy() {
             included in the assessment request.
           </p>
           <p className="mt-4 leading-relaxed text-muted-foreground">
+            Optional beta feedback is different: it is stored in readable form so the CareerGem team
+            can prioritize product improvements. The feedback form tells you not to include resume
+            text, assessment content, or personal details; please follow that instruction.
+          </p>
+          <p className="mt-4 leading-relaxed text-muted-foreground">
             We do not sell career data or use it for advertising. We start without third-party
             behavioural advertising analytics. If that changes, we will update this policy before
             enabling it.

@@ -4,6 +4,7 @@ import type { Session } from "@supabase/supabase-js";
 
 import { supabase } from "@/integrations/supabase/client";
 import { checkVerifier, createVerifier, deriveKey, generateSalt } from "@/lib/crypto";
+import { PUBLIC_BETA } from "@/lib/launch";
 
 export type Profile = {
   id: string;
@@ -237,6 +238,7 @@ export function trialDaysLeft(profile: Profile | null): number {
 
 export function hasAccess(profile: Profile | null): boolean {
   if (!profile) return false;
+  if (PUBLIC_BETA) return true;
   if (profile.plan === "active") return true;
   return trialDaysLeft(profile) > 0;
 }

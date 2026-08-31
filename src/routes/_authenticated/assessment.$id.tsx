@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { AppShell } from "@/components/AppShell";
+import { BetaFeedback } from "@/components/BetaFeedback";
 import { RoleCard } from "@/components/RoleCard";
 import { ScoreGauge, SubScoreBar } from "@/components/ScoreGauge";
 import { ShareSnippet } from "@/components/ShareSnippet";
@@ -309,6 +310,7 @@ function ReportView() {
       </section>
 
       <ShareSnippet report={data} assessmentId={id} />
+      <BetaFeedback page="assessment_report" />
     </article>
   );
 }
