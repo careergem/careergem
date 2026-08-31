@@ -25,6 +25,23 @@ export function ShareSnippet({
     }
   }
 
+  async function share() {
+    if (!navigator.share) {
+      await copy();
+      setStatus("Sharing is not available in this browser, so the text was copied instead.");
+      return;
+    }
+
+    try {
+      await navigator.share({ title: "My CareerGem roadmap", text: snippet });
+      setStatus("Share sheet opened.");
+    } catch (cause) {
+      if ((cause as DOMException).name !== "AbortError") {
+        setStatus("Share failed — try copying the text instead.");
+      }
+    }
+  }
+
   function download() {
     const blob = new Blob([snippet], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
@@ -76,6 +93,9 @@ export function ShareSnippet({
       />
 
       <div className="mt-4 flex flex-wrap gap-3">
+        <Button type="button" onClick={() => void share()}>
+          Share safely
+        </Button>
         <Button type="button" onClick={() => void copy()}>
           Copy text
         </Button>

@@ -1,8 +1,6 @@
-import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 
-import { Button } from "@/components/ui/button";
 import { getAssessmentUsage } from "@/lib/assessment.functions";
 
 /** Server-authoritative usage summary. The client never decides the limit. */
@@ -24,7 +22,8 @@ export function UsageBanner() {
   if (entitlement.tier === "pro") {
     return (
       <p className="rounded-lg border border-hairline bg-surface px-4 py-3 text-sm text-muted-foreground">
-        Pro plan — unlimited assessments, up to {entitlement.roleLimit} target roles each.
+        Early-access account — unlimited assessments, up to {entitlement.roleLimit} target roles
+        each.
       </p>
     );
   }
@@ -35,15 +34,12 @@ export function UsageBanner() {
     : null;
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-hairline bg-surface px-4 py-3">
+    <div className="rounded-lg border border-hairline bg-surface px-4 py-3">
       <p className="text-sm text-muted-foreground">
         {exhausted
-          ? `You have used your free assessment for this month${resets ? ` — it renews ${resets}` : ""}.`
-          : `Free plan — ${remaining} assessment left this month, 1 target role.`}
+          ? `You have used your public-beta assessment for this month${resets ? ` — it renews ${resets}` : ""}.`
+          : `Public beta — ${remaining} private assessment left this month, 1 target role.`}
       </p>
-      <Button asChild size="sm" variant={exhausted ? "default" : "outline"}>
-        <Link to="/pricing">Upgrade for more</Link>
-      </Button>
     </div>
   );
 }

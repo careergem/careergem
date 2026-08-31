@@ -32,7 +32,7 @@ export const Route = createFileRoute("/")({
             "AI career navigation for early-career STEM professionals: career score, gap analysis, and a 90-day roadmap.",
           offers: {
             "@type": "Offer",
-            price: "15.00",
+            price: "0.00",
             priceCurrency: "USD",
           },
         }),
@@ -67,8 +67,14 @@ function Landing() {
 
       <main id="main">
         <section className="relative overflow-hidden border-b border-hairline">
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0 grid-etch opacity-[0.35]" />
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0 starfield opacity-70" />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 grid-etch opacity-[0.35]"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 starfield opacity-70"
+          />
           <div aria-hidden="true" className="pointer-events-none absolute inset-0 aurora" />
           <div
             aria-hidden="true"
@@ -76,22 +82,22 @@ function Landing() {
           />
           <div className="relative mx-auto max-w-6xl px-5 py-24 sm:py-32">
             <p className="font-mono text-xs uppercase tracking-[0.24em] text-signal">
-              Job hunting for STEM, made digestible
+              Public beta · private career guidance for STEM
             </p>
             <h1 className="mt-6 max-w-3xl text-balance-tight font-display text-4xl font-semibold leading-[1.05] sm:text-6xl">
               Stop collecting career advice.{" "}
               <span className="text-orbit">Start knowing your next move.</span>
             </h1>
             <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
-              Every rejection teaches you something six months too late. CareerGem reads your
-              resume the way a hiring manager reads it, breaks the STEM job hunt into steps you
-              can actually act on, and hands you a 90-day plan that turns guesswork into a
-              confident candidacy.
+              Every rejection teaches you something six months too late. CareerGem reads your resume
+              the way a hiring manager reads it, breaks the STEM job hunt into steps you can
+              actually act on, and hands you a 90-day plan that turns guesswork into a confident
+              candidacy.
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-3">
               <Button asChild size="lg">
                 <Link to="/auth" search={{ mode: "signup" }}>
-                  Start your 14-day trial
+                  Get my free beta assessment
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline">
@@ -99,7 +105,7 @@ function Landing() {
               </Button>
             </div>
             <p className="mt-5 font-mono text-xs text-muted-foreground">
-              No card required · Encrypted in your browser · Delete everything in one click
+              No card · {"1 private assessment every 30 days"} · Encrypted in your browser
             </p>
           </div>
         </section>
@@ -128,9 +134,9 @@ function Landing() {
                 Your career data is yours. Structurally, not as a promise.
               </h2>
               <p className="mt-5 text-muted-foreground">
-                Your resume and every report are encrypted in your browser with a key derived
-                from your password. The key never leaves your device. What lands in our
-                database is an unreadable blob — we could not read your resume if we wanted to.
+                Your resume and every report are encrypted in your browser with a key derived from
+                your password. The key never leaves your device. What lands in our database is an
+                unreadable blob — we could not read your resume if we wanted to.
               </p>
               <Button asChild variant="outline" className="mt-7">
                 <Link to="/security">See what we can and cannot read</Link>
@@ -138,9 +144,18 @@ function Landing() {
             </div>
             <dl className="space-y-6">
               {[
-                ["Encrypted before it leaves your device", "AES-GCM with a key derived from your password. Not stored, not transmitted."],
-                ["Nothing kept from the analysis", "Your resume reaches the model once, in memory, per request. It is never written to a table or log."],
-                ["Export or erase, any time", "One button gives you everything. One button destroys everything, permanently."],
+                [
+                  "Encrypted before it leaves your device",
+                  "AES-GCM with a key derived from your password. Not stored, not transmitted.",
+                ],
+                [
+                  "Nothing kept from the analysis",
+                  "Your resume reaches the model once, in memory, per request. It is never written to a table or log.",
+                ],
+                [
+                  "Export or erase, any time",
+                  "One button gives you everything. One button destroys everything, permanently.",
+                ],
               ].map(([term, description]) => (
                 <div key={term} className="border-l-2 border-signal/50 pl-5">
                   <dt className="font-display text-base font-semibold">{term}</dt>
@@ -152,18 +167,24 @@ function Landing() {
         </section>
 
         <section className="relative overflow-hidden px-5 py-24 text-center">
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0 aurora opacity-80" />
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0 starfield opacity-50" />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 aurora opacity-80"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 starfield opacity-50"
+          />
           <h2 className="relative mx-auto max-w-2xl font-display text-3xl font-semibold sm:text-4xl">
             One assessment is enough to see what you have been missing.
           </h2>
           <p className="relative mx-auto mt-5 max-w-xl text-muted-foreground">
-            Fourteen days free. Then $15 a month — less than a single day of the salary you
-            are leaving on the table.
+            Public beta is free. Run one private assessment, see your most important next move, and
+            help shape the product before paid plans open.
           </p>
           <Button asChild size="lg" className="relative mt-9">
             <Link to="/auth" search={{ mode: "signup" }}>
-              Get my career score
+              Join the public beta
             </Link>
           </Button>
           <p className="relative mt-5 text-sm text-muted-foreground">

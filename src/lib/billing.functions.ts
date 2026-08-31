@@ -3,6 +3,7 @@ import { getRequest } from "@tanstack/react-start/server";
 import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { BILLING_ENABLED } from "./launch";
 
 const intervalSchema = z.object({ interval: z.enum(["monthly", "yearly"]) });
 
@@ -24,6 +25,9 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => intervalSchema.parse(input))
   .handler(async ({ data, context }) => {
+    if (!BILLING_ENABLED) {
+      throw new Error("Subscriptions are not available during the CareerGem public beta.");
+    }
     const { userId, claims } = context;
     const { priceIdForInterval, stripeRequest } = await import("./stripe.server");
     const { ensureStripeCustomer } = await import("./billing.server");
@@ -54,6 +58,9 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
 export const createPortalSession = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    if (!BILLING_ENABLED) {
+      throw new Error("Subscriptions are not available during the CareerGem public beta.");
+    }
     const { userId } = context;
     const { stripeRequest } = await import("./stripe.server");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");

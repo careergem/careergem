@@ -15,7 +15,8 @@ export function buildShareSnippet(
   const role = report.roles[roleIndex];
   if (!role) return "";
 
-  const link = `${SITE}?utm_source=share&utm_assessment=${encodeURIComponent(assessmentId)}`;
+  void assessmentId;
+  const link = `${SITE}?utm_source=share&utm_medium=roadmap&utm_campaign=public_beta`;
 
   return [
     RULE,
@@ -27,8 +28,8 @@ export function buildShareSnippet(
     ...role.topGaps.map((gap) => `• ${gap.title}`),
     "",
     "My action plan:",
-    ...role.actions.map((item) =>
-      `• ${item.action}${item.timeEstimate ? ` (${item.timeEstimate})` : ""}`,
+    ...role.actions.map(
+      (item) => `• ${item.action}${item.timeEstimate ? ` (${item.timeEstimate})` : ""}`,
     ),
     "",
     link,
