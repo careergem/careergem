@@ -227,6 +227,25 @@ function AuthPage() {
             </Button>
           </form>
 
+          {showTestSignIn ? (
+            <div className="mt-5 rounded-md border border-dashed border-hairline p-4">
+              <p className="text-xs text-muted-foreground">
+                Testing only — signs in to a shared fixture account instead of creating a real one.
+              </p>
+              <Button
+                type="button"
+                variant="secondary"
+                className="mt-3 w-full"
+                onClick={handleTestSignIn}
+                disabled={busy}
+              >
+                {busy ? "Working…" : "Sign in as test user"}
+              </Button>
+            </div>
+          ) : null}
+
+
+
           <p className="mt-6 text-sm text-muted-foreground">
             {isSignup ? "Already have an account? " : "New to CareerGem? "}
             <Link
