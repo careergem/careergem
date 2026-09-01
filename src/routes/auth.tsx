@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
+import { TEST_ACCOUNT, ensureTestAccount } from "@/lib/dev-login.functions";
+
 
 type Mode = "signin" | "signup";
 
@@ -85,7 +87,23 @@ function AuthPage() {
     }
   }
 
+  async function handleTestSignIn() {
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      await ensureTestAccount();
+      await signIn(TEST_ACCOUNT.email, TEST_ACCOUNT.password);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Test sign-in failed.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   const isSignup = mode === "signup";
+  const showTestSignIn = import.meta.env.DEV;
+
 
   return (
     <main className="flex min-h-dvh items-center justify-center px-5 py-16">
@@ -208,6 +226,25 @@ function AuthPage() {
               {busy ? "Working…" : isSignup ? "Create account" : "Sign in"}
             </Button>
           </form>
+
+          {showTestSignIn ? (
+            <div className="mt-5 rounded-md border border-dashed border-hairline p-4">
+              <p className="text-xs text-muted-foreground">
+                Testing only — signs in to a shared fixture account instead of creating a real one.
+              </p>
+              <Button
+                type="button"
+                variant="secondary"
+                className="mt-3 w-full"
+                onClick={handleTestSignIn}
+                disabled={busy}
+              >
+                {busy ? "Working…" : "Sign in as test user"}
+              </Button>
+            </div>
+          ) : null}
+
+
 
           <p className="mt-6 text-sm text-muted-foreground">
             {isSignup ? "Already have an account? " : "New to CareerGem? "}
