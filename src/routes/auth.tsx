@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
+import { TEST_ACCOUNT, ensureTestAccount } from "@/lib/dev-login.functions";
+
 
 type Mode = "signin" | "signup";
 
