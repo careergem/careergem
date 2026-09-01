@@ -87,7 +87,23 @@ function AuthPage() {
     }
   }
 
+  async function handleTestSignIn() {
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      await ensureTestAccount();
+      await signIn(TEST_ACCOUNT.email, TEST_ACCOUNT.password);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Test sign-in failed.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   const isSignup = mode === "signup";
+  const showTestSignIn = import.meta.env.DEV;
+
 
   return (
     <main className="flex min-h-dvh items-center justify-center px-5 py-16">
