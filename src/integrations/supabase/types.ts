@@ -74,6 +74,8 @@ export type Database = {
           kdf_salt: string | null
           known_gaps: string[]
           onboarding_complete: boolean
+          personal_details_ciphertext: string | null
+          personal_details_iv: string | null
           plan: string
           stripe_customer_id: string | null
           stripe_subscription_id: string | null
@@ -97,6 +99,8 @@ export type Database = {
           kdf_salt?: string | null
           known_gaps?: string[]
           onboarding_complete?: boolean
+          personal_details_ciphertext?: string | null
+          personal_details_iv?: string | null
           plan?: string
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
@@ -120,6 +124,8 @@ export type Database = {
           kdf_salt?: string | null
           known_gaps?: string[]
           onboarding_complete?: boolean
+          personal_details_ciphertext?: string | null
+          personal_details_iv?: string | null
           plan?: string
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
