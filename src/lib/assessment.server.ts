@@ -1,8 +1,187 @@
 import { generateText, Output } from "ai";
-import type { z } from "zod";
+import { z } from "zod";
 
 import { createLovableAiGatewayProvider } from "./ai-gateway.server";
-import { reportSchema, type CareerReport } from "./assessment-schema";
+import { reportSchema, gapTypes, impactLevels, type CareerReport } from "./assessment-schema";
+
+/**
+ * The model occasionally returns a valid-shaped report that violates the strict
+ * bounds (too few gaps, a stray impact label, missing nullable fields). Parsing
+ * with a lenient schema and normalising afterwards keeps a usable assessment
+ * instead of throwing AI_NoObjectGeneratedError.
+ */
+const looseGap = z.object({
+  title: z.string().default("Unspecified gap"),
+  type: z.string().default("technical"),
+  impact: z.string().default("medium"),
+  why: z.string().default(""),
+});
+
+const looseReportSchema = z.object({
+  score: z.number().default(50),
+  headline: z.string().default("Assessment complete"),
+  summary: z.string().default(""),
+  subScores: z
+    .object({
+      technicalDepth: z.number().default(50),
+      evidenceOfImpact: z.number().default(50),
+      credibilitySignals: z.number().default(50),
+      marketAlignment: z.number().default(50),
+      presentation: z.number().default(50),
+    })
+    .partial()
+    .default({}),
+  extracted: z
+    .object({
+      yearsExperience: z.number().nullish(),
+      senioritySignal: z.string().nullish(),
+      skills: z.array(z.string()).default([]),
+      technologies: z.array(z.string()).default([]),
+    })
+    .partial()
+    .default({}),
+  strengths: z.array(z.string()).default([]),
+  gaps: z.array(looseGap).default([]),
+  roles: z
+    .array(
+      z.object({
+        title: z.string().default("Target role"),
+        readinessNow: z.number().default(5),
+        readinessTarget: z.number().default(7),
+        topGaps: z.array(looseGap).default([]),
+        actions: z
+          .array(
+            z.object({
+              action: z.string().default(""),
+              why: z.string().default(""),
+              resource: z.string().nullish(),
+              timeEstimate: z.string().nullish(),
+            }),
+          )
+          .default([]),
+        confidenceBuilder: z.string().default(""),
+      }),
+    )
+    .default([]),
+  roadmap: z
+    .array(
+      z.object({
+        block: z.number().default(1),
+        focus: z.string().default(""),
+        actions: z.array(z.string()).default([]),
+      }),
+    )
+    .default([]),
+});
+
+type LooseReport = z.infer<typeof looseReportSchema>;
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(max, Math.max(min, Math.round(Number.isFinite(value) ? value : min)));
+
+const padTo = <T>(items: T[], min: number, fill: () => T) => {
+  const out = [...items];
+  while (out.length < min) out.push(fill());
+  return out;
+};
+
+function normalizeGap(gap: LooseReport["gaps"][number]) {
+  const type = (gapTypes as readonly string[]).includes(gap.type) ? gap.type : "technical";
+  const impact = (impactLevels as readonly string[]).includes(gap.impact) ? gap.impact : "medium";
+  return {
+    title: gap.title || "Unspecified gap",
+    type: type as (typeof gapTypes)[number],
+    impact: impact as (typeof impactLevels)[number],
+    why: gap.why || "Not enough evidence in the resume to judge this area.",
+  };
+}
+
+function normalizeReport(raw: LooseReport, targetRoles: string[]): CareerReport {
+  const fallbackGap = () => ({
+    title: "Evidence not detailed enough to assess",
+    type: "confidence" as const,
+    impact: "medium" as const,
+    why: "The resume does not give enough detail to judge this area.",
+  });
+
+  const gaps = padTo(raw.gaps.slice(0, 8).map(normalizeGap), 2, fallbackGap);
+
+  const roles = padTo(
+    raw.roles.slice(0, 5).map((role, index) => {
+      const now = clamp(role.readinessNow, 1, 10);
+      return {
+        title: role.title || targetRoles[index] || "Target role",
+        readinessNow: now,
+        readinessTarget: clamp(Math.max(role.readinessTarget, now), now, Math.min(10, now + 3)),
+        topGaps: padTo(role.topGaps.slice(0, 3).map(normalizeGap), 1, fallbackGap),
+        actions: padTo(
+          role.actions.slice(0, 5).map((action) => ({
+            action: action.action || "Add measurable outcomes to your strongest project.",
+            why: action.why || "Hiring managers screen for quantified impact.",
+            resource: action.resource ?? null,
+            timeEstimate: action.timeEstimate ?? null,
+          })),
+          3,
+          () => ({
+            action: "Add measurable outcomes to your strongest project.",
+            why: "Hiring managers screen for quantified impact.",
+            resource: null,
+            timeEstimate: null,
+          }),
+        ),
+        confidenceBuilder: role.confidenceBuilder || "Completing these actions raises your readiness.",
+      };
+    }),
+    1,
+    () => ({
+      title: targetRoles[0] ?? "Target role",
+      readinessNow: 5,
+      readinessTarget: 7,
+      topGaps: [fallbackGap()],
+      actions: [1, 2, 3].map(() => ({
+        action: "Add measurable outcomes to your strongest project.",
+        why: "Hiring managers screen for quantified impact.",
+        resource: null,
+        timeEstimate: null,
+      })),
+      confidenceBuilder: "Completing these actions raises your readiness.",
+    }),
+  );
+
+  const roadmap = [1, 2, 3].map((block) => {
+    const match = raw.roadmap.find((entry) => Math.round(entry.block) === block);
+    return {
+      block,
+      focus: match?.focus || `Days ${(block - 1) * 30 + 1}-${block * 30}`,
+      actions: padTo((match?.actions ?? []).slice(0, 6), 2, () =>
+        "Complete one concrete, verifiable task toward this focus.",
+      ),
+    };
+  });
+
+  return reportSchema.parse({
+    score: clamp(raw.score, 0, 100),
+    headline: raw.headline || "Assessment complete",
+    summary: raw.summary || "Your assessment is based only on the evidence in your resume.",
+    subScores: {
+      technicalDepth: clamp(raw.subScores.technicalDepth ?? 50, 0, 100),
+      evidenceOfImpact: clamp(raw.subScores.evidenceOfImpact ?? 50, 0, 100),
+      credibilitySignals: clamp(raw.subScores.credibilitySignals ?? 50, 0, 100),
+      marketAlignment: clamp(raw.subScores.marketAlignment ?? 50, 0, 100),
+      presentation: clamp(raw.subScores.presentation ?? 50, 0, 100),
+    },
+    extracted: {
+      yearsExperience: raw.extracted.yearsExperience ?? null,
+      senioritySignal: raw.extracted.senioritySignal ?? null,
+      skills: (raw.extracted.skills ?? []).slice(0, 24),
+      technologies: (raw.extracted.technologies ?? []).slice(0, 24),
+    },
+    strengths: padTo(raw.strengths.slice(0, 6), 1, () => "Willingness to act on specific feedback."),
+    gaps,
+    roles,
+    roadmap,
+  });
+}
 
 const SYSTEM_PROMPT = `You are a hiring-side career strategist for early-career STEM professionals.
 You have screened thousands of resumes as a hiring manager and recruiter.
@@ -109,8 +288,10 @@ export async function runAssessment(args: AnalyzeArgs): Promise<CareerReport> {
     temperature: 0,
     topP: 1,
     seed: 7,
-    output: Output.object({ schema: reportSchema as unknown as z.ZodType<CareerReport> }),
+    output: Output.object({
+      schema: looseReportSchema as unknown as z.ZodType<LooseReport>,
+    }),
   });
 
-  return output;
+  return normalizeReport(looseReportSchema.parse(output), args.targetRoles);
 }
