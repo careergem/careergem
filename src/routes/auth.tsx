@@ -91,15 +91,24 @@ function AuthPage() {
     setBusy(true);
     setError(null);
     setNotice(null);
+    setEmail(TEST_ACCOUNT.email);
+    setPassword(TEST_ACCOUNT.password);
     try {
       await ensureTestAccount();
-      await signIn(TEST_ACCOUNT.email, TEST_ACCOUNT.password);
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Test sign-in failed.");
+      try {
+        await signIn(TEST_ACCOUNT.email, TEST_ACCOUNT.password);
+      } catch {
+        // The fixture password may have drifted: re-provision once, then retry.
+        await ensureTestAccount();
+        await signIn(TEST_ACCOUNT.email, TEST_ACCOUNT.password);
+      }
+    } catch {
+      setError("Test account sign-in failed — provisioning may not have completed. Try again.");
     } finally {
       setBusy(false);
     }
   }
+
 
   const isSignup = mode === "signup";
   const showTestSignIn = import.meta.env.DEV;
