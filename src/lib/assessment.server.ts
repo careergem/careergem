@@ -288,8 +288,10 @@ export async function runAssessment(args: AnalyzeArgs): Promise<CareerReport> {
     temperature: 0,
     topP: 1,
     seed: 7,
-    output: Output.object({ schema: reportSchema as unknown as z.ZodType<CareerReport> }),
+    output: Output.object({
+      schema: looseReportSchema as unknown as z.ZodType<LooseReport>,
+    }),
   });
 
-  return output;
+  return normalizeReport(looseReportSchema.parse(output), args.targetRoles);
 }
