@@ -91,15 +91,24 @@ function AuthPage() {
     setBusy(true);
     setError(null);
     setNotice(null);
+    setEmail(TEST_ACCOUNT.email);
+    setPassword(TEST_ACCOUNT.password);
     try {
       await ensureTestAccount();
-      await signIn(TEST_ACCOUNT.email, TEST_ACCOUNT.password);
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Test sign-in failed.");
+      try {
+        await signIn(TEST_ACCOUNT.email, TEST_ACCOUNT.password);
+      } catch {
+        // The fixture password may have drifted: re-provision once, then retry.
+        await ensureTestAccount();
+        await signIn(TEST_ACCOUNT.email, TEST_ACCOUNT.password);
+      }
+    } catch {
+      setError("Test account sign-in failed — provisioning may not have completed. Try again.");
     } finally {
       setBusy(false);
     }
   }
+
 
   const isSignup = mode === "signup";
   const showTestSignIn = import.meta.env.DEV;
@@ -232,6 +241,17 @@ function AuthPage() {
               <p className="text-xs text-muted-foreground">
                 Testing only — signs in to a shared fixture account instead of creating a real one.
               </p>
+              <dl className="mt-3 space-y-1 text-xs text-muted-foreground">
+                <div className="flex gap-2">
+                  <dt className="w-16 shrink-0">Email</dt>
+                  <dd className="break-all font-mono text-foreground">{TEST_ACCOUNT.email}</dd>
+                </div>
+                <div className="flex gap-2">
+                  <dt className="w-16 shrink-0">Password</dt>
+                  <dd className="break-all font-mono text-foreground">{TEST_ACCOUNT.password}</dd>
+                </div>
+              </dl>
+
               <Button
                 type="button"
                 variant="secondary"
