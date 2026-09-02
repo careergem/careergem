@@ -241,6 +241,17 @@ function AuthPage() {
               <p className="text-xs text-muted-foreground">
                 Testing only — signs in to a shared fixture account instead of creating a real one.
               </p>
+              <dl className="mt-3 space-y-1 text-xs text-muted-foreground">
+                <div className="flex gap-2">
+                  <dt className="w-16 shrink-0">Email</dt>
+                  <dd className="break-all font-mono text-foreground">{TEST_ACCOUNT.email}</dd>
+                </div>
+                <div className="flex gap-2">
+                  <dt className="w-16 shrink-0">Password</dt>
+                  <dd className="break-all font-mono text-foreground">{TEST_ACCOUNT.password}</dd>
+                </div>
+              </dl>
+
               <Button
                 type="button"
                 variant="secondary"
